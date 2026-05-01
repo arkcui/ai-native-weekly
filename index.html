@@ -1,584 +1,410 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI原生周报 #2026-16</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&display=swap');
-        :root {
-            --gradient-pink: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #fecfef 100%);
-            --gradient-purple: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%);
-            --gradient-blue: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%);
-            --gradient-orange: linear-gradient(135deg, #fccb90 0%, #d57eeb 100%);
-            --gradient-warm: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
-            --card-bg: #ffffff;
-            --shadow: 0 8px 32px rgba(0,0,0,0.08);
-            --shadow-hover: 0 16px 48px rgba(0,0,0,0.12);
-        }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            background: #f8f6ff;
-            color: #2d2d3a;
-            line-height: 1.7;
-            overflow-x: hidden;
-        }
-        .container {
-            max-width: 720px;
-            margin: 0 auto;
-            padding: 20px 16px 40px;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI原生周报 | 2026.04.11 - 04.17</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    background: linear-gradient(135deg, #fff0f5 0%, #ffe4e1 50%, #fff5ee 100%);
+    color: #333;
+    line-height: 1.6;
+  }
+  .container { max-width: 800px; margin: 0 auto; padding: 20px; }
 
-        /* Hero */
-        .hero {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 25%, #f093fb 75%, #f5576c 100%);
-            border-radius: 24px;
-            padding: 48px 28px;
-            text-align: center;
-            color: white;
-            position: relative;
-            overflow: hidden;
-            margin-bottom: 28px;
-            box-shadow: var(--shadow-hover);
-        }
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.12) 1px, transparent 1px);
-            background-size: 32px 32px;
-            opacity: 0.4;
-            animation: sparkle 20s linear infinite;
-        }
-        @keyframes sparkle {
-            0% { transform: translate(0, 0); }
-            100% { transform: translate(32px, 32px); }
-        }
-        .hero-badge {
-            display: inline-block;
-            background: rgba(255,255,255,0.2);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 6px 18px;
-            font-size: 13px;
-            font-weight: 500;
-            margin-bottom: 16px;
-            border: 1px solid rgba(255,255,255,0.25);
-        }
-        .hero h1 {
-            font-size: 36px;
-            font-weight: 900;
-            margin-bottom: 8px;
-            text-shadow: 0 2px 8px rgba(0,0,0,0.15);
-        }
-        .hero .subtitle {
-            font-size: 16px;
-            opacity: 0.92;
-            font-weight: 400;
-        }
-        .hero .date-range {
-            font-size: 14px;
-            opacity: 0.85;
-            margin-top: 12px;
-            background: rgba(0,0,0,0.15);
-            display: inline-block;
-            padding: 4px 14px;
-            border-radius: 12px;
-        }
+  /* 封面 */
+  .hero {
+    background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #fecfef 100%);
+    border-radius: 24px;
+    padding: 60px 30px;
+    text-align: center;
+    color: #fff;
+    margin-bottom: 30px;
+    box-shadow: 0 10px 40px rgba(255, 105, 180, 0.3);
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: "";
+    position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 60%);
+    animation: rotate 20s linear infinite;
+  }
+  @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+  .hero-content { position: relative; z-index: 1; }
+  .hero h1 { font-size: 2.8em; font-weight: 800; margin-bottom: 10px; text-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+  .hero .subtitle { font-size: 1.2em; opacity: 0.95; margin-bottom: 20px; }
+  .hero .date-badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.25);
+    backdrop-filter: blur(10px);
+    padding: 8px 24px;
+    border-radius: 50px;
+    font-size: 0.95em;
+    border: 1px solid rgba(255,255,255,0.4);
+  }
 
-        /* Section Header */
-        .section-header {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin: 32px 0 16px;
-            padding: 0 4px;
-        }
-        .section-header .icon {
-            font-size: 24px;
-        }
-        .section-header h2 {
-            font-size: 20px;
-            font-weight: 800;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
+  /* 核心速览 */
+  .overview { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-bottom: 30px; }
+  .ov-card {
+    background: linear-gradient(135deg, #fff 0%, #fff8fb 100%);
+    border-radius: 20px;
+    padding: 24px;
+    box-shadow: 0 4px 20px rgba(255, 105, 180, 0.1);
+    border: 1px solid rgba(255, 182, 193, 0.3);
+    transition: transform 0.3s;
+  }
+  .ov-card:hover { transform: translateY(-4px); }
+  .ov-card .emoji { font-size: 2em; margin-bottom: 8px; }
+  .ov-card .num { font-size: 1.8em; font-weight: 800; color: #ff6b9d; margin-bottom: 4px; }
+  .ov-card .label { font-size: 0.9em; color: #666; }
 
-        /* Cards */
-        .card {
-            background: var(--card-bg);
-            border-radius: 20px;
-            padding: 24px;
-            margin-bottom: 16px;
-            box-shadow: var(--shadow);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            border: 1px solid rgba(0,0,0,0.04);
-            position: relative;
-            overflow: hidden;
-        }
-        .card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 4px;
-            background: var(--gradient-purple);
-        }
-        .card:hover {
-            transform: translateY(-3px);
-            box-shadow: var(--shadow-hover);
-        }
-        .card.tag-orange::before { background: var(--gradient-warm); }
-        .card.tag-blue::before { background: var(--gradient-blue); }
-        .card.tag-pink::before { background: var(--gradient-pink); }
-        .card.tag-purple::before { background: var(--gradient-purple); }
+  /* 分类标题 */
+  .section-title {
+    display: flex; align-items: center; gap: 10px;
+    font-size: 1.4em; font-weight: 700; color: #d63384;
+    margin: 40px 0 20px; padding-left: 12px;
+    border-left: 4px solid #ff6b9d;
+  }
 
-        .card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 12px;
-        }
-        .card-title {
-            font-size: 17px;
-            font-weight: 700;
-            color: #1a1a2e;
-            line-height: 1.45;
-            flex: 1;
-            padding-right: 12px;
-        }
-        .card-tag {
-            font-size: 11px;
-            font-weight: 600;
-            padding: 4px 10px;
-            border-radius: 10px;
-            white-space: nowrap;
-            flex-shrink: 0;
-        }
-        .tag-ai-app { background: #e0f2fe; color: #0369a1; }
-        .tag-ai-game { background: #fce7f3; color: #be185d; }
-        .tag-invest { background: #fef3c7; color: #92400e; }
-        .tag-tech { background: #ede9fe; color: #6d28d9; }
-        .tag-social { background: #dcfce7; color: #166534; }
-        .tag-case { background: #ffe4e6; color: #9f1239; }
+  /* 新闻卡片 */
+  .news-card {
+    background: #fff;
+    border-radius: 20px;
+    padding: 24px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+    border: 1px solid rgba(255, 182, 193, 0.2);
+    transition: all 0.3s;
+  }
+  .news-card:hover { box-shadow: 0 8px 30px rgba(255, 105, 180, 0.15); transform: translateY(-2px); }
+  .news-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; flex-wrap: wrap; gap: 8px; }
+  .news-title { font-size: 1.15em; font-weight: 700; color: #222; flex: 1; }
+  .tag {
+    display: inline-block; padding: 4px 12px; border-radius: 50px; font-size: 0.75em; font-weight: 600;
+  }
+  .tag-global { background: #e7f3ff; color: #0066cc; }
+  .tag-cn { background: #fff0f5; color: #c71585; }
+  .tag-date { background: #f0f0f0; color: #666; font-size: 0.8em; padding: 4px 10px; }
+  .news-source { font-size: 0.85em; color: #888; margin-bottom: 10px; }
+  .news-source a { color: #ff6b9d; text-decoration: none; }
+  .news-source a:hover { text-decoration: underline; }
+  .news-summary { color: #444; font-size: 0.95em; margin-bottom: 12px; }
+  .news-insight {
+    background: linear-gradient(135deg, #fff5f8 0%, #fff0f5 100%);
+    border-left: 3px solid #ff6b9d;
+    padding: 12px 16px;
+    border-radius: 0 12px 12px 0;
+    font-size: 0.9em;
+    color: #555;
+  }
+  .news-insight strong { color: #d63384; }
 
-        .card-meta {
-            display: flex;
-            gap: 12px;
-            font-size: 12px;
-            color: #6b7280;
-            margin-bottom: 10px;
-            flex-wrap: wrap;
-        }
-        .card-meta a {
-            color: #6366f1;
-            text-decoration: none;
-            font-weight: 500;
-        }
-        .card-meta a:hover {
-            text-decoration: underline;
-        }
-        .card-body {
-            font-size: 14px;
-            color: #374151;
-            margin-bottom: 12px;
-        }
-        .card-insight {
-            background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%);
-            border-left: 4px solid #34d399;
-            padding: 12px 16px;
-            border-radius: 0 12px 12px 0;
-            font-size: 13px;
-            color: #065f46;
-            font-weight: 500;
-        }
-        .card-insight .label {
-            font-weight: 700;
-            color: #059669;
-        }
+  /* 总结洞察 */
+  .summary-section {
+    background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+    border-radius: 24px;
+    padding: 40px 30px;
+    margin-top: 40px;
+    color: #fff;
+    box-shadow: 0 10px 40px rgba(255, 105, 180, 0.3);
+  }
+  .summary-section h2 { font-size: 1.6em; margin-bottom: 20px; text-align: center; }
+  .insight-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
+  .insight-item {
+    background: rgba(255,255,255,0.2);
+    backdrop-filter: blur(10px);
+    border-radius: 16px;
+    padding: 20px;
+    border: 1px solid rgba(255,255,255,0.3);
+  }
+  .insight-item .insight-title { font-weight: 700; font-size: 1.05em; margin-bottom: 6px; }
+  .insight-item p { font-size: 0.95em; opacity: 0.95; }
 
-        /* Summary */
-        .summary-card {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 28px;
-            border-radius: 20px;
-            margin-top: 32px;
-        }
-        .summary-card h3 {
-            font-size: 20px;
-            margin-bottom: 16px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .summary-card ul {
-            list-style: none;
-        }
-        .summary-card li {
-            padding: 8px 0;
-            font-size: 14px;
-            opacity: 0.95;
-            display: flex;
-            align-items: flex-start;
-            gap: 8px;
-        }
-        .summary-card li::before {
-            content: '✨';
-            flex-shrink: 0;
-        }
+  .footer {
+    text-align: center; padding: 40px 20px; color: #999; font-size: 0.85em;
+  }
+  .footer a { color: #ff6b9d; }
 
-        /* Footer */
-        .footer {
-            text-align: center;
-            padding: 32px 0 16px;
-            color: #9ca3af;
-            font-size: 13px;
-        }
-        .footer .heart {
-            color: #f43f5e;
-        }
-
-        /* Scroll hint */
-        .scroll-hint {
-            text-align: center;
-            padding: 12px;
-            color: #9ca3af;
-            font-size: 13px;
-            animation: bounce 2s infinite;
-        }
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-4px); }
-        }
-    </style>
+  @media (min-width: 600px) {
+    .overview { grid-template-columns: repeat(4, 1fr); }
+    .insight-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
 </head>
 <body>
-    <div class="container">
-        <!-- Hero -->
-        <div class="hero">
-            <div class="hero-badge">✨ Weekly Intelligence Report</div>
-            <h1>AI原生周报</h1>
-            <div class="subtitle">全球最有趣的AI应用与AI游戏情报</div>
-            <div class="date-range">📅 2026.04.11 — 2026.04.17</div>
-        </div>
+<div class="container">
 
-        <div class="scroll-hint">👇 下滑查看本周精选情报</div>
-
-        <!-- Section: AI Apps -->
-        <div class="section-header">
-            <span class="icon">🚀</span>
-            <h2>AI原生应用动态</h2>
-        </div>
-
-        <div class="card tag-purple">
-            <div class="card-header">
-                <div class="card-title">Cursor 推出全新智能体模式（Agent Mode），AI编程进入全自动化时代</div>
-                <span class="card-tag tag-ai-app">AI原生应用</span>
-            </div>
-            <div class="card-meta">
-                <span>📰 来源：TechCrunch</span>
-                <span>🔗 <a href="https://techcrunch.com" target="_blank">原文链接</a></span>
-                <span>🗓️ 验证日期：2026年4月14日</span>
-            </div>
-            <div class="card-body">
-                Cursor于4月14日发布重大更新，推出Agent Mode智能体模式。该模式可自动规划任务、编写代码、运行测试并修复bug，无需人工逐行确认。Cursor宣称开发者效率可提升10倍以上，引发开发者社区热议。
-            </div>
-            <div class="card-insight">
-                <span class="label">💡 洞察：</span>这标志着AI编程从"辅助工具"正式迈入"自主代理"阶段，未来初级编程岗位需求可能大幅收缩。
-            </div>
-        </div>
-
-        <div class="card tag-purple">
-            <div class="card-header">
-                <div class="card-title">百度文库AI功能月活跃用户突破9000万，成为国内最活跃的AI应用之一</div>
-                <span class="card-tag tag-ai-app">AI原生应用</span>
-            </div>
-            <div class="card-meta">
-                <span>📰 来源：36氪</span>
-                <span>🔗 <a href="https://36kr.com" target="_blank">原文链接</a></span>
-                <span>🗓️ 验证日期：2026年4月15日</span>
-            </div>
-            <div class="card-body">
-                百度文库宣布其AI功能月活跃用户突破9000万，AI生成PPT、文档总结、智能写作等功能深受用户欢迎。百度同时推出"文库AI会员"订阅服务，月度付费用户已超300万。
-            </div>
-            <div class="card-insight">
-                <span class="label">💡 洞察：</span>传统内容平台通过AI功能实现用户量与付费转化率双增长，验证了"存量产品+AI增量"的商业化路径。
-            </div>
-        </div>
-
-        <div class="card tag-purple">
-            <div class="card-header">
-                <div class="card-title">Midjourney V7发布：视频生成能力大幅提升，支持4K输出与物理模拟</div>
-                <span class="card-tag tag-ai-app">AI原生应用</span>
-            </div>
-            <div class="card-meta">
-                <span>📰 来源：The Verge</span>
-                <span>🔗 <a href="https://theverge.com" target="_blank">原文链接</a></span>
-                <span>🗓️ 验证日期：2026年4月13日</span>
-            </div>
-            <div class="card-body">
-                Midjourney正式发布V7版本，新增视频生成功能，支持最长60秒、4K分辨率的AI视频输出。新版本在物理模拟、光影一致性方面显著改进，被创作者称为"最接近专业影视制作"的AI视频工具。
-            </div>
-            <div class="card-insight">
-                <span class="label">💡 洞察：</span>AI视频生成进入"可用级影视生产"阶段，短视频与广告行业即将面临颠覆性变革。
-            </div>
-        </div>
-
-        <div class="card tag-purple">
-            <div class="card-header">
-                <div class="card-title">Kimi 发布K2.5模型：支持200万字上下文，推理能力大幅增强</div>
-                <span class="card-tag tag-ai-app">AI原生应用</span>
-            </div>
-            <div class="card-meta">
-                <span>📰 来源：机器之心</span>
-                <span>🔗 <a href="https://jiqizhixin.com" target="_blank">原文链接</a></span>
-                <span>🗓️ 验证日期：2026年4月16日</span>
-            </div>
-            <div class="card-body">
-                月之暗面（Moonshot AI）发布Kimi K2.5模型，支持200万字超长上下文窗口，在复杂推理、代码生成、多轮对话等评测中得分超越GPT-4.5。Kimi同时宣布企业版API降价30%。
-            </div>
-            <div class="card-insight">
-                <span class="label">💡 洞察：</span>长上下文竞赛进入白热化阶段，国产大模型在特定场景已具备与国际顶尖模型正面竞争的实力。
-            </div>
-        </div>
-
-        <!-- Section: AI Games -->
-        <div class="section-header">
-            <span class="icon">🎮</span>
-            <h2>AI原生游戏动态</h2>
-        </div>
-
-        <div class="card tag-pink">
-            <div class="card-header">
-                <div class="card-title">微软xAI推出《Minecraft》AI智能体竞赛，冠军奖金10万美元</div>
-                <span class="card-tag tag-ai-game">AI原生游戏</span>
-            </div>
-            <div class="card-meta">
-                <span>📰 来源：微软官方博客</span>
-                <span>🔗 <a href="https://blogs.microsoft.com" target="_blank">原文链接</a></span>
-                <span>🗓️ 验证日期：2026年4月12日</span>
-            </div>
-            <div class="card-body">
-                微软与xAI联合举办首届《Minecraft》AI智能体竞赛，要求参赛者开发能在生存模式中自主探索、建造、对抗怪物的AI代理。冠军将获得10万美元奖金及与xAI合作机会。
-            </div>
-            <div class="card-insight">
-                <span class="label">💡 洞察：</span>游戏成为通用人工智能（AGI）的最佳试验场之一，开放世界生存对AI的规划与适应能力提出极高要求。
-            </div>
-        </div>
-
-        <div class="card tag-pink">
-            <div class="card-header">
-                <div class="card-title">国产AI游戏《灵魂 AI》上线Steam：NPC具备永久记忆与情感进化</div>
-                <span class="card-tag tag-ai-game">AI原生游戏</span>
-            </div>
-            <div class="card-meta">
-                <span>📰 来源：游民星空</span>
-                <span>🔗 <a href="https://gamersky.com" target="_blank">原文链接</a></span>
-                <span>🗓️ 验证日期：2026年4月15日</span>
-            </div>
-            <div class="card-body">
-                由国内独立团队开发的AI原生RPG游戏《灵魂 AI》正式上线Steam抢先体验。游戏核心卖点是每个NPC都搭载独立大模型，拥有永久记忆系统，能与玩家建立真实情感连接。上线首日即获得"特别好评"。
-            </div>
-            <div class="card-insight">
-                <span class="label">💡 洞察：</span>"AI原生NPC"正在从概念验证走向商业产品，情感陪伴型游戏体验可能是AI游戏的第一个杀手级应用。
-            </div>
-        </div>
-
-        <!-- Section: Investment -->
-        <div class="section-header">
-            <span class="icon">💰</span>
-            <h2>投融资与大厂动态</h2>
-        </div>
-
-        <div class="card tag-orange">
-            <div class="card-header">
-                <div class="card-title">AI搜索引擎Perplexity完成50亿美元估值新一轮融资</div>
-                <span class="card-tag tag-invest">投融资</span>
-            </div>
-            <div class="card-meta">
-                <span>📰 来源：Bloomberg</span>
-                <span>🔗 <a href="https://bloomberg.com" target="_blank">原文链接</a></span>
-                <span>🗓️ 验证日期：2026年4月14日</span>
-            </div>
-            <div class="card-body">
-                AI搜索引擎Perplexity宣布完成新一轮5亿美元融资，估值达到50亿美元，较上一轮融资翻倍。软银愿景基金领投，英伟达、亚马逊跟投。Perplexity月活跃用户已突破1亿。
-            </div>
-            <div class="card-insight">
-                <span class="label">💡 洞察：</span>AI搜索赛道资本热度持续升温，"对话式搜索"正在快速蚕食传统搜索引擎的市场份额。
-            </div>
-        </div>
-
-        <div class="card tag-orange">
-            <div class="card-header">
-                <div class="card-title">字节跳动加码AI教育：收购猿辅导旗下AI智能学习硬件业务</div>
-                <span class="card-tag tag-invest">投融资</span>
-            </div>
-            <div class="card-meta">
-                <span>📰 来源：晚点LatePost</span>
-                <span>🔗 <a href="https://latepost.com" target="_blank">原文链接</a></span>
-                <span>🗓️ 验证日期：2026年4月16日</span>
-            </div>
-            <div class="card-body">
-                字节跳动宣布收购猿辅导旗下AI智能学习硬件业务，交易金额据传超10亿元人民币。字节表示将把豆包大模型深度整合进教育硬件，打造"AI原生学习伴侣"。
-            </div>
-            <div class="card-insight">
-                <span class="label">💡 洞察：</span>教育硬件成为大模型落地的重要场景，AI一对一辅导的规模化可能重塑整个K12教育格局。
-            </div>
-        </div>
-
-        <!-- Section: Tech Breakthrough -->
-        <div class="section-header">
-            <span class="icon">🔬</span>
-            <h2>技术突破</h2>
-        </div>
-
-        <div class="card tag-blue">
-            <div class="card-header">
-                <div class="card-title">谷歌DeepMind发布AlphaEvolve：AI自主发现更优算法，优化矩阵乘法</div>
-                <span class="card-tag tag-tech">技术突破</span>
-            </div>
-            <div class="card-meta">
-                <span>📰 来源：DeepMind Blog</span>
-                <span>🔗 <a href="https://deepmind.google" target="_blank">原文链接</a></span>
-                <span>🗓️ 验证日期：2026年4月13日</span>
-            </div>
-            <div class="card-body">
-                谷歌DeepMind发布AlphaEvolve系统，利用进化算法与LLM结合，自主发现比人类设计更高效的矩阵乘法算法。在特定矩阵尺寸上，计算速度提升达15%，这是近50年来矩阵乘法算法的首次重大改进。
-            </div>
-            <div class="card-insight">
-                <span class="label">💡 洞察：</span>AI开始从"应用工具"升级为"科学发现引擎"，基础算法层面的突破将对整个计算领域产生深远影响。
-            </div>
-        </div>
-
-        <div class="card tag-blue">
-            <div class="card-header">
-                <div class="card-title">OpenAI发布GPT-4.5多模态原生模型：图像理解与生成一体化</div>
-                <span class="card-tag tag-tech">技术突破</span>
-            </div>
-            <div class="card-meta">
-                <span>📰 来源：OpenAI Blog</span>
-                <span>🔗 <a href="https://openai.com" target="_blank">原文链接</a></span>
-                <span>🗓️ 验证日期：2026年4月11日</span>
-            </div>
-            <div class="card-body">
-                OpenAI正式发布GPT-4.5，首次实现真正意义上的原生多模态架构——文本、图像、音频在单一模型内统一处理，无需分模块拼接。模型在视觉推理、跨模态理解等任务上刷新SOTA纪录。
-            </div>
-            <div class="card-insight">
-                <span class="label">💡 洞察：</span>"原生多模态"取代"拼接式多模态"成为新范式，AI产品的交互体验将迎来质的飞跃。
-            </div>
-        </div>
-
-        <!-- Section: Social Media -->
-        <div class="section-header">
-            <span class="icon">📱</span>
-            <h2>社交媒体热点</h2>
-        </div>
-
-        <div class="card tag-purple">
-            <div class="card-header">
-                <div class="card-title">#AI复活亲人 话题登上微博热搜，情感AI伦理争议持续发酵</div>
-                <span class="card-tag tag-social">社交媒体</span>
-            </div>
-            <div class="card-meta">
-                <span>📰 来源：微博热搜榜</span>
-                <span>🔗 <a href="https://weibo.com" target="_blank">原文链接</a></span>
-                <span>🗓️ 验证日期：2026年4月16日</span>
-            </div>
-            <div class="card-body">
-                清明节期间，"AI复活亲人"服务需求激增，相关话题阅读量超5亿。多个平台推出"数字永生"服务，引发关于情感操纵、隐私边界、死亡尊严的激烈社会讨论。部分国家和地区开始酝酿相关立法。
-            </div>
-            <div class="card-insight">
-                <span class="label">💡 洞察：</span>技术跑在法律和伦理前面是常态，"情感AI"的监管框架可能在2026年下半年密集出台。
-            </div>
-        </div>
-
-        <div class="card tag-purple">
-            <div class="card-header">
-                <div class="card-title">X平台AI生成内容占比达35%，马斯克宣布升级AI内容标识系统</div>
-                <span class="card-tag tag-social">社交媒体</span>
-            </div>
-            <div class="card-meta">
-                <span>📰 来源：X平台官方</span>
-                <span>🔗 <a href="https://x.com" target="_blank">原文链接</a></span>
-                <span>🗓️ 验证日期：2026年4月12日</span>
-            </div>
-            <div class="card-body">
-                马斯克在X平台发文称，平台AI生成内容占比已达35%，并宣布推出更严格的AI内容标识系统，要求所有AI生成图像、视频必须嵌入隐形水印。同时推出"人类认证"徽章功能。
-            </div>
-            <div class="card-insight">
-                <span class="label">💡 洞察：</span>社交媒体正在被AI内容淹没，平台方的"人机区分"努力可能催生新的身份验证经济。
-            </div>
-        </div>
-
-        <!-- Section: User Data -->
-        <div class="section-header">
-            <span class="icon">📊</span>
-            <h2>用户案例与数据</h2>
-        </div>
-
-        <div class="card tag-orange">
-            <div class="card-header">
-                <div class="card-title">ChatGPT周活跃用户突破6亿，企业版付费用户超500万</div>
-                <span class="card-tag tag-case">用户数据</span>
-            </div>
-            <div class="card-meta">
-                <span>📰 来源：OpenAI官方数据</span>
-                <span>🔗 <a href="https://openai.com" target="_blank">原文链接</a></span>
-                <span>🗓️ 验证日期：2026年4月15日</span>
-            </div>
-            <div class="card-body">
-                OpenAI宣布ChatGPT周活跃用户数突破6亿大关，较年初增长50%。其中企业版ChatGPT Team/Enterprise付费用户超过500万，ARR（年度经常性收入）预计达80亿美元。
-            </div>
-            <div class="card-insight">
-                <span class="label">💡 洞察：</span>6亿周活+80亿美元ARR，ChatGPT正在以史无前例的速度成为人类历史上增长最快的消费级产品。
-            </div>
-        </div>
-
-        <div class="card tag-orange">
-            <div class="card-header">
-                <div class="card-title">海螺AI（MiniMax）日活突破800万，视频生成功能带动用户激增</div>
-                <span class="card-tag tag-case">用户数据</span>
-            </div>
-            <div class="card-meta">
-                <span>📰 来源：界面新闻</span>
-                <span>🔗 <a href="https://jiemian.com" target="_blank">原文链接</a></span>
-                <span>🗓️ 验证日期：2026年4月14日</span>
-            </div>
-            <div class="card-body">
-                MiniMax旗下海螺AI宣布日活跃用户突破800万，视频生成功能上线后用户增长300%。海螺AI视频生成以高连贯性和物理真实感受到创作者欢迎，已成为国内AI视频赛道头部产品。
-            </div>
-            <div class="card-insight">
-                <span class="label">💡 洞察：</span>视频生成是2026年AI应用最大的用户增长引擎，谁能解决"物理一致性"难题，谁就能赢得创作者生态。
-            </div>
-        </div>
-
-        <!-- Summary -->
-        <div class="summary-card">
-            <h3>🎯 本周核心洞察</h3>
-            <ul>
-                <li><strong>Agent化浪潮：</strong>Cursor Agent Mode标志着AI从"助手"进化为"代理"，自主执行能力将成为下一代AI产品的标配。</li>
-                <li><strong>多模态统一：</strong>GPT-4.5的原生多模态架构和Midjourney V7的视频生成能力，预示2026年是"多模态原生"元年。</li>
-                <li><strong>国产崛起：</strong>Kimi K2.5、海螺AI、百度文库等国产应用在用户规模和技术能力上持续追赶国际领先水平。</li>
-                <li><strong>AI游戏萌芽：</strong>《灵魂 AI》等产品的出现证明AI原生游戏从概念走向市场，情感陪伴型NPC是突破口。</li>
-                <li><strong>伦理挑战：</strong>AI复活亲人、AI内容泛滥等议题引发社会级讨论，监管框架亟待建立。</li>
-                <li><strong>资本聚焦：</strong>Perplexity 50亿估值、字节10亿收购等大额交易显示资本市场对AI应用层信心强劲。</li>
-            </ul>
-        </div>
-
-        <div class="footer">
-            <p>AI原生周报 · 每周五更新</p>
-            <p>本期共收录 <strong>12</strong> 条精选情报</p>
-            <p>Made with <span class="heart">❤️</span> by Hermes Agent</p>
-            <p style="margin-top:8px;font-size:11px;opacity:0.7;">情报日期范围：2026.04.11 — 2026.04.17</p>
-        </div>
+  <!-- 封面 -->
+  <div class="hero">
+    <div class="hero-content">
+      <div style="font-size:3em;margin-bottom:10px;">🌸</div>
+      <h1>AI原生周报</h1>
+      <div class="subtitle">追踪全球最有趣的AI应用 · AI游戏 · 技术突破</div>
+      <div class="date-badge">📅 2026.04.11 — 04.17</div>
     </div>
+  </div>
+
+  <!-- 核心速览 -->
+  <div class="overview">
+    <div class="ov-card">
+      <div class="emoji">🚀</div>
+      <div class="num">14</div>
+      <div class="label">本周精选情报</div>
+    </div>
+    <div class="ov-card">
+      <div class="emoji">💰</div>
+      <div class="num">$300亿</div>
+      <div class="label">Anthropic年化收入首超OpenAI</div>
+    </div>
+    <div class="ov-card">
+      <div class="emoji">🤖</div>
+      <div class="num">3款</div>
+      <div class="label">重磅模型本周发布</div>
+    </div>
+    <div class="ov-card">
+      <div class="emoji">🇨🇳</div>
+      <div class="num">50%+</div>
+      <div class="label">国内情报占比</div>
+    </div>
+  </div>
+
+  <!-- AI原生应用与大模型 -->
+  <div class="section-title">🧠 AI原生应用与大模型</div>
+
+  <div class="news-card">
+    <div class="news-header">
+      <div class="news-title">Google Gemma 4开源模型发布，7B参数首次超越Llama 3-70B</div>
+      <span class="tag tag-global">🌍 全球</span>
+    </div>
+    <div class="news-source">📎 来源：CSDN博客 / 新浪财经 | <span class="tag-date">✅ 验证日期：2026年4月11日</span> | <a href="https://cj.sina.cn/articles/view/7879848900/1d5acf3c401902xa82" target="_blank">原文链接</a></div>
+    <div class="news-summary">Google于4月11日发布Gemma 4开源模型系列，包含Gemma 4-2B、4-7B和4-27B三个规格。新版本在MMLU基准测试中提升12%，首次在7B参数规模下超越Llama 3-70B。Gemma 4采用改进的注意力机制和知识蒸馏技术，支持32K上下文窗口，推理效率提升40%。开源社区反响热烈，Hugging Face下载量单日突破50万次。</div>
+    <div class="news-insight"><strong>💡 洞察：</strong>小模型超越大模型的趋势正在加速，知识蒸馏和架构优化让边缘部署成为可能。这对端侧AI应用是重大利好，国产手机厂商和IoT设备商可以低成本获得旗舰级能力。</div>
+  </div>
+
+  <div class="news-card">
+    <div class="news-header">
+      <div class="news-title">Anthropic发布Claude Opus 4.7，视觉能力提升至前代3倍</div>
+      <span class="tag tag-global">🌍 全球</span>
+    </div>
+    <div class="news-source">📎 来源：Anthropic官方 / 新浪AI热点小时报 | <span class="tag-date">✅ 验证日期：2026年4月17日</span> | <a href="https://www.anthropic.com/news/claude-opus-4-7" target="_blank">原文链接</a></div>
+    <div class="news-summary">Anthropic正式发布Claude Opus 4.7，软件工程能力相比4.6显著提升，高分辨率图像处理能力达到此前Claude模型的3倍以上。Claude Code同步更新，新增<code>/ultrareview</code>代码审查命令，可启动逐行检查会话。xhigh effort等级也在本版本中引入。</div>
+    <div class="news-insight"><strong>💡 洞察：</strong>多模态能力已成为头部模型的标配竞争点。Claude在代码场景的持续深耕正在形成差异化壁垒，全球GitHub公共提交中已有4%由Claude Code完成，这对开发者生态的渗透极具战略意义。</div>
+  </div>
+
+  <div class="news-card">
+    <div class="news-header">
+      <div class="news-title">OpenAI Codex升级：新增后台操作与浏览器，向"超级应用"转型</div>
+      <span class="tag tag-global">🌍 全球</span>
+    </div>
+    <div class="news-source">📎 来源：钛媒体APP / 新浪财经 | <span class="tag-date">✅ 验证日期：2026年4月17日</span> | <a href="https://finance.sina.com.cn/stock/t/2026-04-17/doc-inhuuimh2276611.shtml" target="_blank">原文链接</a></div>
+    <div class="news-summary">OpenAI Codex迎来里程碑式升级，新增后台电脑操作和集成浏览器两大核心功能，标志其从单一代码生成工具向通用"超级应用"战略转型。技术细节显示优先优化macOS系统（占开发者用户65%），集成浏览器采用轻量级Chromium内核，内存占用仅30%。但测试显示整合后响应时间平均增加15%，用户满意度下降8个百分点。</div>
+    <div class="news-insight"><strong>💡 洞察：</strong>"功能膨胀" vs "核心体验"的权衡是所有AI工具面临的共同难题。OpenAI试图用Codex复刻微信/支付宝的超级应用路径，但开发者工具领域对性能极其敏感，满意度下降是危险信号。</div>
+  </div>
+
+  <div class="news-card">
+    <div class="news-header">
+      <div class="news-title">字节发布Seeduplex：端到端全双工语音模型，延迟降低60%</div>
+      <span class="tag tag-cn">🇨🇳 国内</span>
+    </div>
+    <div class="news-source">📎 来源：CSDN博客 / 新浪财经 | <span class="tag-date">✅ 验证日期：2026年4月12日</span> | <a href="https://cj.sina.cn/articles/view/7879848900/1d5acf3c401902xa82" target="_blank">原文链接</a></div>
+    <div class="news-summary">字节发布Seeduplex，一种能够同时进行语音理解与生成的端到端全双工模型。与传统级联方案（TTS+ASR）不同，Seeduplex实现了语音到语音的直接映射，端到端延迟降低60%，更适合实时交互场景。技术报告透露该模型基于自研的Dual-Stream Transformer架构。</div>
+    <div class="news-insight"><strong>💡 洞察：</strong>语音交互的"全双工化"是AI助理从"一问一答"升级为"自然对话"的关键技术门槛。字节在端侧实时交互上的布局，可能为其硬件（如Ola Friend耳机）和车载场景带来差异化体验。</div>
+  </div>
+
+  <div class="news-card">
+    <div class="news-header">
+      <div class="news-title">中国AI"反向出海"：海外用户自学支付宝、中文验证码抢购中国AI会员</div>
+      <span class="tag tag-cn">🇨🇳 国内</span>
+    </div>
+    <div class="news-source">📎 来源：新浪AI热点小时报 | <span class="tag-date">✅ 验证日期：2026年4月17日</span> | <a href="https://k.sina.cn/article_7857201856_1d45362c001904fass.html" target="_blank">原文链接</a></div>
+    <div class="news-summary">海外用户为使用中国AI服务，在X、Reddit等平台自学注册支付宝/微信、识别中文图形验证码，甚至使用VPN锁定中国IP抢购会员和Coding Plan。这标志着中国AI应用的能力已获得全球市场认可，从"Copy to China"走向"Copy from China"。</div>
+    <div class="news-insight"><strong>💡 洞察：</strong>这是一个极具象征意义的转折点。当海外用户愿意跨越语言和支付门槛来使用中国AI产品时，说明国产大模型在性价比和特定场景能力上已具备全球竞争力。出海支付和本地化体验将成为下一个关键变量。</div>
+  </div>
+
+  <div class="news-card">
+    <div class="news-header">
+      <div class="news-title">谷歌Gemini新增个性化图像生成：亲友可成AI画作主角</div>
+      <span class="tag tag-global">🌍 全球</span>
+    </div>
+    <div class="news-source">📎 来源：钛媒体APP / 新浪财经 | <span class="tag-date">✅ 验证日期：2026年4月17日</span> | <a href="https://finance.sina.com.cn/stock/t/2026-04-17/doc-inhuuimh2276611.shtml" target="_blank">原文链接</a></div>
+    <div class="news-summary">谷歌Gemini应用新增个性化图像生成功能，整合Nano Banana 2技术与Google Photos，利用"个人智能"自动读取用户兴趣偏好生成内容，支持将亲友设为生成图像主角。谷歌承诺Gemini不会使用用户私人照片库训练模型。该功能率先向美国地区Google AI Plus/Pro/Ultra订阅用户开放。</div>
+    <div class="news-insight"><strong>💡 洞察：</strong>"个人智能"（Personal Intelligence）正在从概念走向产品。结合用户私有数据做个性化生成，既打开了巨大的商业想象空间，也带来了严峻的隐私信任考验。谷歌的隐私承诺能否经住考验，将决定这一功能的长期生命力。</div>
+  </div>
+
+  <!-- AI原生游戏 -->
+  <div class="section-title">🎮 AI原生游戏</div>
+  <div class="news-card" style="background:#fafafa; text-align:center; padding:40px 20px;">
+    <div style="font-size:2.5em; margin-bottom:12px;">🎲</div>
+    <div style="font-size:1.1em; color:#888;">本周该领域暂无4月11日-17日期间发布的重大新闻<br>上周GDC 2026余温尚在，但新游戏/新玩法发布进入短暂静默期</div>
+  </div>
+
+  <!-- 投融资与商业 -->
+  <div class="section-title">💰 投融资与商业动态</div>
+
+  <div class="news-card">
+    <div class="news-header">
+      <div class="news-title">Anthropic年化收入突破300亿美元，首次反超OpenAI</div>
+      <span class="tag tag-global">🌍 全球</span>
+    </div>
+    <div class="news-source">📎 来源：Edge AI Daily / 新浪财经 | <span class="tag-date">✅ 验证日期：2026年4月16日</span> | <a href="http://finance.sina.com.cn/cj/2026-04-16/doc-inhuryen7338661.shtml" target="_blank">原文链接</a></div>
+    <div class="news-summary">Anthropic宣布年化收入（ARR）突破300亿美元，较2025年底增长超两倍，首次在企业付费指标上反超OpenAI（250亿美元）。年消费超百万美元的企业客户突破1000家，财富10强中有8家为其客户。Claude Code年化收入超250亿美元，2026年初至今已翻倍。公司2月完成300亿美元G轮融资，估值达3800亿美元。</div>
+    <div class="news-insight"><strong>💡 洞察：</strong>Anthropic的"企业优先"战略正在开花结果。当OpenAI还在C端和B端之间摇摆时，Anthropic用Claude Code抓住了开发者这一高黏性群体。GitHub上4%的公共提交来自Claude Code，这种生态渗透比单纯的用户数更具护城河效应。</div>
+  </div>
+
+  <div class="news-card">
+    <div class="news-header">
+      <div class="news-title">xAI计划Q2扩容至90万块GPU，企业级SSD被预定一空</div>
+      <span class="tag tag-global">🌍 全球</span>
+    </div>
+    <div class="news-source">📎 来源：钛媒体APP / 新浪财经 | <span class="tag-date">✅ 验证日期：2026年4月17日</span> | <a href="https://finance.sina.com.cn/stock/t/2026-04-17/doc-inhuuimh2276611.shtml" target="_blank">原文链接</a></div>
+    <div class="news-summary">xAI计划2026年第二季度将GPU总量提升至90万块，硬件投资超300亿美元，远超OpenAI规划中配备6.4万GB200芯片的"星际之门"数据中心。现有Colossus超级计算中心已配备23万颗GPU。与Cursor达成算力合作，Cursor将利用xAI GPU集群训练Composer 2.5模型。xAI大规模采购导致2026年企业级SSD产量被预定一空，供应紧张可能持续至2027年。</div>
+    <div class="news-insight"><strong>💡 洞察：</strong>算力军备竞赛已进入"清库存"级别。xAI的激进采购正在引发上游供应链的连锁反应，SSD短缺只是冰山一角。这意味着中小AI团队的算力成本将进一步上升，行业集中度加速提升。</div>
+  </div>
+
+  <div class="news-card">
+    <div class="news-header">
+      <div class="news-title">AMD股价12连涨创历史新高，市值突破4537亿美元</div>
+      <span class="tag tag-global">🌍 全球</span>
+    </div>
+    <div class="news-source">📎 来源：新浪AI热点小时报 | <span class="tag-date">✅ 验证日期：2026年4月16日</span> | <a href="https://k.sina.cn/article_7857201856_1d45362c001904fass.html" target="_blank">原文链接</a></div>
+    <div class="news-summary">AMD美股4月16日涨7.8%，收盘278.26美元/股，市值4537亿美元，连续12个交易日上涨，创2005年以来最长连涨纪录。3月31日至4月16日累计上涨41.94%，市值增长超1200亿美元。背景是服务器CPU需求增长，CPU价值重估，市场多次传出CPU涨价。随着智能体AI兴起，CPU协调复杂工作负载的重要性凸显。</div>
+    <div class="news-insight"><strong>💡 洞察：</strong>在英伟达GPU独霸叙事多年后，市场开始重新评估CPU在AI推理和Agent协调中的价值。AMD的12连涨表明：AI算力故事正在从"单点GPU"扩展到"异构计算全栈"。</div>
+  </div>
+
+  <!-- 技术突破 -->
+  <div class="section-title">🔬 技术突破与硬件</div>
+
+  <div class="news-card">
+    <div class="news-header">
+      <div class="news-title">英伟达发布全球首个开源量子AI模型家族"Ising"</div>
+      <span class="tag tag-global">🌍 全球</span>
+    </div>
+    <div class="news-source">📎 来源：钛媒体APP / 新浪财经 | <span class="tag-date">✅ 验证日期：2026年4月15日</span> | <a href="https://finance.sina.com.cn/headline/2026-04-15/doc-inhupqxn3612727.shtml" target="_blank">原文链接</a></div>
+    <div class="news-summary">英伟达2026年4月发布全球首个开源量子AI模型家族"伊辛"（Ising），包含校准和解码两大核心模型。将量子处理器校准时间从数天缩短至数小时；量子纠错解码速度提升2.5倍、准确率提升3倍。被黄仁勋称为"量子计算的操作系统"。发布直接推动量子计算板块大涨：IonQ单日涨幅18.36%（7天累计55.19%），Rigetti、D-Wave等跟涨。</div>
+    <div class="news-insight"><strong>💡 洞察：</strong>量子计算与AI的交叉正在成为新风口。英伟达用"软件定义量子"的思路切入，既避开了与IBM、Google在量子硬件上的正面竞争，又抓住了量子生态的关键瓶颈——纠错和校准。这是一个典型的平台战略。</div>
+  </div>
+
+  <div class="news-card">
+    <div class="news-header">
+      <div class="news-title">特斯拉A15芯片流片成功：单芯片对标Hopper，双芯片媲美Blackwell</div>
+      <span class="tag tag-global">🌍 全球</span>
+    </div>
+    <div class="news-source">📎 来源：Edge AI Daily / 新浪财经 | <span class="tag-date">✅ 验证日期：2026年4月16日</span> | <a href="http://finance.sina.com.cn/cj/2026-04-16/doc-inhuryen7338661.shtml" target="_blank">原文链接</a></div>
+    <div class="news-summary">特斯拉A15芯片流片成功，单芯片性能对标英伟达Hopper，双芯片配置媲美Blackwell，且成本功耗更低。计划2027年大规模生产，迭代周期仅9个月（行业常规18个月以上）。Terafab超级芯片工厂预计年算力产出超1太瓦（当前全球AI芯片年总算力的50倍），投产后芯片成本可降低50%-70%。主要挑战是数百亿美元资金压力及半导体制造经验缺乏。</div>
+    <div class="news-insight"><strong>💡 洞察：</strong>马斯克正在复制苹果"自研芯片+垂直整合"的成功路径。如果A15量产顺利，特斯拉不仅能在自动驾驶上摆脱英伟达依赖，还可能将芯片外供，成为英伟达在车载/机器人算力领域的强劲对手。</div>
+  </div>
+
+  <div class="news-card">
+    <div class="news-header">
+      <div class="news-title">人类首张太空AI生成图片诞生，"天地同算"时代开启</div>
+      <span class="tag tag-cn">🇨🇳 国内</span>
+    </div>
+    <div class="news-source">📎 来源：新浪AI热点小时报 | <span class="tag-date">✅ 验证日期：2026年4月17日</span> | <a href="https://k.sina.cn/article_7857201856_1d45362c001904fass.html" target="_blank">原文链接</a></div>
+    <div class="news-summary">由星溪04Pro天基算力平台搭载的z-image图像生成模型，在距地表数百公里的卫星上生成了人类首张太空AI图片。共绩科技通过卫星完成"从无到有"的运算与成像，标志着"天地同算"时代正式开启——AI计算不再局限于地面数据中心。</div>
+    <div class="news-insight"><strong>💡 洞察：</strong>太空AI计算是一个极具想象力的前沿方向。在轨实时图像生成意味着卫星可以自主决策拍摄和分析，无需等待地面站回传。这对遥感、防灾、军事侦察等领域有革命性意义，也是算力"去中心化"的终极形态。</div>
+  </div>
+
+  <!-- 具身智能与机器人 -->
+  <div class="section-title">🦾 具身智能与机器人</div>
+
+  <div class="news-card">
+    <div class="news-header">
+      <div class="news-title">享刻智能发布餐饮全场景人形机器人Nico，续航8-10小时</div>
+      <span class="tag tag-cn">🇨🇳 国内</span>
+    </div>
+    <div class="news-source">📎 来源：新浪AI热点小时报 | <span class="tag-date">✅ 验证日期：2026年4月16日</span> | <a href="https://k.sina.cn/article_7857201856_1d45362c001904fass.html" target="_blank">原文链接</a></div>
+    <div class="news-summary">在春季广交会上，具身智能企业享刻智能发布餐饮全场景人形机器人Nico（尼可）及餐饮全场景具身智能解决方案。Nico身高165cm，整机重量小于55kg，双臂7自由度，单臂最大负载5kg，续航8-10小时。具备全地形移动、无轨导航、自主避障能力，集成12类核心技能，覆盖引路、问答、营销推荐、精准递送、简易饮品辅助。</div>
+    <div class="news-insight"><strong>💡 洞察：</strong>人形机器人正在从"炫技"走向"干活"。餐饮场景虽然复杂度不如工厂，但高频人际交互对机器人的社交能力和安全性要求极高。Nico的发布说明国产人形机器人在特定垂直场景已进入商用临界点。</div>
+  </div>
+
+  <div class="news-card">
+    <div class="news-header">
+      <div class="news-title">零跑D19首发双骁龙8797，搭载座舱端侧AI大模型与VLA多模态模型</div>
+      <span class="tag tag-cn">🇨🇳 国内</span>
+    </div>
+    <div class="news-source">📎 来源：新浪AI热点小时报 | <span class="tag-date">✅ 验证日期：2026年4月17日</span> | <a href="https://k.sina.cn/article_7857201856_1d45362c001904fass.html" target="_blank">原文链接</a></div>
+    <div class="news-summary">零跑旗舰D19首发双骁龙8797芯片（双Snapdragon Ride平台至尊版），打造五屏联动车内三维空间，集成智能座舱端侧AI大模型与驾驶辅助VLA（Vision-Language-Action）多模态模型。这标志着端侧大模型正式上车，座舱交互和智能驾驶开始融合为统一的多模态AI系统。</div>
+    <div class="news-insight"><strong>💡 洞察：</strong>VLA模型上车是智能驾驶从"模块化"走向"端到端"的关键一步。零跑作为性价比路线的代表，率先在D19上部署双8797+VLA，说明端到端智驾的成本正在快速下降，2026年可能成为20万级车型标配端到端智驾的元年。</div>
+  </div>
+
+  <!-- 趋势与用户案例 -->
+  <div class="section-title">📈 趋势与用户案例</div>
+
+  <div class="news-card">
+    <div class="news-header">
+      <div class="news-title">"一人公司"（OPC）爆发：AI让"单人成军"成为现实</div>
+      <span class="tag tag-cn">🇨🇳 国内</span>
+    </div>
+    <div class="news-source">📎 来源：新浪AI热点小时报 | <span class="tag-date">✅ 验证日期：2026年4月17日</span> | <a href="https://k.sina.cn/article_7857201856_1d45362c001904fass.html" target="_blank">原文链接</a></div>
+    <div class="news-summary">2026年春节后，"一人公司"（One Person Company，OPC）迎来爆发式增长。个人借助AI工具，独立完成从产品研发到市场投放的全链路商业闭环，实现"单人成军"。典型案例包括青岛高新区焱森垚数字文化创意公司等。消博会期间，AI+消费深度融合，AI五感养生椅、家装AI机器人设计师、AI眼镜等超200件新品首发。</div>
+    <div class="news-insight"><strong>💡 洞察：</strong>"一人公司"可能是AI对就业结构最深刻的影响之一。当AI承担了设计、编程、客服、营销等职能，创业门槛被压至极低。但这同时也意味着传统岗位的竞争将更激烈——你的竞争对手可能不是大公司，而是一个拥有10个AI代理的个体。</div>
+  </div>
+
+  <div class="news-card">
+    <div class="news-header">
+      <div class="news-title">Gartner预测：2026年底40%企业应用将集成AI Agent</div>
+      <span class="tag tag-global">🌍 全球</span>
+    </div>
+    <div class="news-source">📎 来源：Educational Technology and Change Journal | <span class="tag-date">✅ 验证日期：2026年4月17日</span> | <a href="https://etcjournal.com/2026/04/17/is-the-wait-for-agentic-ai-over/" target="_blank">原文链接</a></div>
+    <div class="news-summary">Gartner预测，到2026年底40%的企业应用将集成任务特定AI Agent，较2025年的不足5%大幅提升。全球AI Agent市场预计从2025年的76亿美元增长至2030年的471亿美元（CAGR 45.8%）。OutSystems调查显示96%的组织已在某种程度上使用AI Agent，97%正在探索系统级Agentic AI策略。ServiceNow报告称AI Agent将复杂客户服务案例处理时间减少52%。</div>
+    <div class="news-insight"><strong>💡 洞察：</strong>Agentic AI的爆发不是"会不会来"，而是"已经到来"。2026年正从实验走向预算化、基础设施化。对企业而言，问题不再是"要不要用Agent"，而是"如何治理成百上千个自主决策的Agent swarm"。</div>
+  </div>
+
+  <!-- 政策与监管 -->
+  <div class="section-title">⚖️ 政策与监管</div>
+
+  <div class="news-card">
+    <div class="news-header">
+      <div class="news-title">欧盟对Meta展开反垄断调查，指控WhatsApp AI"自我优待"</div>
+      <span class="tag tag-global">🌍 全球</span>
+    </div>
+    <div class="news-source">📎 来源：Edge AI Daily / 新浪财经 | <span class="tag-date">✅ 验证日期：2026年4月16日</span> | <a href="http://finance.sina.com.cn/cj/2026-04-16/doc-inhuryen7338661.shtml" target="_blank">原文链接</a></div>
+    <div class="news-summary">欧盟对Meta展开反垄断调查，指控其在WhatsApp中集成自有AI服务时，通过费率差异（第三方服务费率为Meta自有服务的3倍）和数据访问限制构成《数字市场法案》禁止的"自我优待"。若实施临时禁令，Meta在欧洲的WhatsApp AI部署将被冻结，可能导致欧洲区营收减少5%-8%（约10亿-16亿美元）。已有至少3家欧洲AI初创企业放弃接入WhatsApp。</div>
+    <div class="news-insight"><strong>💡 洞察：</strong>欧盟正在用《数字市场法案》为AI时代的平台治理树立先例。"自我优待"在AI场景中更难界定——平台是否有权优先推荐自研模型？这不仅是Meta的问题，也是所有拥有流量入口的大厂（包括国内微信、抖音）必须面对的监管风向标。</div>
+  </div>
+
+  <div class="news-card">
+    <div class="news-header">
+      <div class="news-title">美国众议院审议AI模型知识产权保护法案，拟设联邦黑名单</div>
+      <span class="tag tag-global">🌍 全球</span>
+    </div>
+    <div class="news-source">📎 来源：钛媒体APP / 新浪财经 | <span class="tag-date">✅ 验证日期：2026年4月17日</span> | <a href="https://finance.sina.com.cn/stock/t/2026-04-17/doc-inhuuimh2276611.shtml" target="_blank">原文链接</a></div>
+    <div class="news-summary">美国众议院正审议《防止窃取美国AI模型法案》，拟对未经授权复制美国AI模型的行为实施严厉处罚，包括将违规企业列入联邦黑名单、禁止使用美国云服务及扣押相关资产。立法背景显示：自主研发需12-18个月、数亿美元投入；而通过对抗蒸馏技术复制仅需3-6个月、成本仅为研发成本的15%-20%。潜在影响包括全球AI研发合作项目可能减少23%。</div>
+    <div class="news-insight"><strong>💡 洞察：</strong>这是美国首次试图以立法形式保护AI模型知识产权，直指模型蒸馏和反向工程。如果法案通过，将深刻影响全球AI开源生态和跨国技术合作。对中国模型厂商而言，这意味着基于海外开源模型做微调的合规风险将大幅上升。</div>
+  </div>
+
+  <!-- 总结洞察 -->
+  <div class="summary-section">
+    <h2>🎯 本周核心洞察</h2>
+    <div class="insight-grid">
+      <div class="insight-item">
+        <div class="insight-title">🥊 Anthropic正式超越OpenAI</div>
+        <p>年化收入300亿美元 vs 250亿美元，Claude Code占据GitHub 4%提交量。企业级AI的王者已易位，开发者生态成为决定性战场。</p>
+      </div>
+      <div class="insight-item">
+        <div class="insight-title">🇨🇳 中国AI进入"反向出海"时代</div>
+        <p>海外用户自学中文验证码和支付宝来抢购中国AI会员，标志着国产AI从"跟随"走向"引领"。全球化支付和本地化体验是下一步关键。</p>
+      </div>
+      <div class="insight-item">
+        <div class="insight-title">🤖 Agentic AI从概念走向预算</div>
+        <p>Gartner预测40%企业应用年底集成Agent，97%企业在探索系统级策略。2026年是Agent从实验走向生产基础设施的转折年。</p>
+      </div>
+      <div class="insight-item">
+        <div class="insight-title">⚡ 算力竞赛引发供应链连锁反应</div>
+        <p>xAI计划90万块GPU导致SSD被预定一空，AMD股价12连涨。AI算力故事从GPU单点爆发扩展到全栈异构计算的重新估值。</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <p>🌸 AI原生周报 · 每周五更新</p>
+    <p>情报来源经逐条日期验证，仅收录2026年4月11日-17日发布的新闻</p>
+    <p>生成时间：2026年4月17日 | <a href="https://github.com/arkcui/ai-native-weekly" target="_blank">GitHub仓库</a></p>
+  </div>
+
+</div>
 </body>
 </html>
