@@ -2,448 +2,282 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI原生周报 | 2026.04.11 - 04.17</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AI原生周报 | 2026.04.11-04.17</title>
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
-    background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
-    color: #333;
-    line-height: 1.6;
-  }
-  .container { max-width: 800px; margin: 0 auto; padding: 20px; }
-
-  /* Cover */
-  .cover {
-    background: linear-gradient(120deg, #ff9a9e 0%, #fecfef 50%, #fecfef 100%);
-    border-radius: 24px;
-    padding: 60px 30px;
-    text-align: center;
-    color: #fff;
-    margin-bottom: 30px;
-    box-shadow: 0 10px 40px rgba(255, 154, 158, 0.3);
-    position: relative;
-    overflow: hidden;
-  }
-  .cover::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 60%);
-    animation: pulse 6s ease-in-out infinite;
-  }
-  @keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.1)} }
-  .cover h1 { font-size: 2.4rem; font-weight: 800; margin-bottom: 12px; position: relative; z-index: 1; text-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-  .cover .subtitle { font-size: 1.1rem; opacity: 0.95; position: relative; z-index: 1; }
-  .cover .date-badge {
-    display: inline-block;
-    background: rgba(255,255,255,0.25);
-    backdrop-filter: blur(10px);
-    padding: 8px 20px;
-    border-radius: 20px;
-    margin-top: 16px;
-    font-size: 0.95rem;
-    font-weight: 600;
-    position: relative;
-    z-index: 1;
-    border: 1px solid rgba(255,255,255,0.3);
-  }
-
-  /* Section titles */
-  .section-title {
-    font-size: 1.4rem;
-    font-weight: 700;
-    margin: 40px 0 20px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    color: #444;
-  }
-  .section-title .icon { font-size: 1.6rem; }
-
-  /* Cards */
-  .card {
-    background: #fff;
-    border-radius: 20px;
-    padding: 24px;
-    margin-bottom: 20px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.06);
-    transition: transform 0.2s, box-shadow 0.2s;
-    border: 1px solid rgba(0,0,0,0.04);
-  }
-  .card:hover { transform: translateY(-3px); box-shadow: 0 8px 30px rgba(0,0,0,0.1); }
-  .card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; flex-wrap: wrap; gap: 8px; }
-  .card-title { font-size: 1.15rem; font-weight: 700; color: #222; flex: 1; }
-  .tag {
-    display: inline-block;
-    padding: 4px 12px;
-    border-radius: 12px;
-    font-size: 0.75rem;
-    font-weight: 600;
-  }
-  .tag-domestic { background: #ffe4e1; color: #c0392b; }
-  .tag-global { background: #e8f4f8; color: #2980b9; }
-  .tag-tech { background: #f3e5f5; color: #8e24aa; }
-  .tag-invest { background: #e8f5e9; color: #2e7d32; }
-  .tag-app { background: #fff3e0; color: #ef6c00; }
-  .tag-social { background: #fce4ec; color: #c2185b; }
-
-  .meta {
-    font-size: 0.82rem;
-    color: #888;
-    margin-bottom: 10px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
-    align-items: center;
-  }
-  .meta .source { font-weight: 600; color: #666; }
-  .meta .verified-date {
-    background: #f0f9ff;
-    color: #0369a1;
-    padding: 2px 10px;
-    border-radius: 8px;
-    font-weight: 700;
-    font-size: 0.78rem;
-  }
-  .card p { font-size: 0.95rem; color: #555; margin-bottom: 10px; }
-  .insight {
-    background: linear-gradient(135deg, #fff9c4 0%, #fffde7 100%);
-    border-left: 4px solid #f9a825;
-    padding: 12px 16px;
-    border-radius: 0 12px 12px 0;
-    margin-top: 12px;
-    font-size: 0.9rem;
-    color: #5d4037;
-  }
-  .insight-label { font-weight: 700; color: #f57f17; margin-right: 6px; }
-  .card a {
-    color: #2980b9;
-    text-decoration: none;
-    font-size: 0.85rem;
-    word-break: break-all;
-  }
-  .card a:hover { text-decoration: underline; }
-
-  /* Core stats */
-  .stats-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-    gap: 16px;
-    margin-bottom: 30px;
-  }
-  .stat-card {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    border-radius: 20px;
-    padding: 24px 16px;
-    text-align: center;
-    color: #fff;
-    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.3);
-  }
-  .stat-card:nth-child(2) { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); box-shadow: 0 6px 20px rgba(245, 87, 108, 0.3); }
-  .stat-card:nth-child(3) { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); box-shadow: 0 6px 20px rgba(79, 172, 254, 0.3); }
-  .stat-card:nth-child(4) { background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); box-shadow: 0 6px 20px rgba(67, 233, 123, 0.3); }
-  .stat-number { font-size: 1.8rem; font-weight: 800; margin-bottom: 4px; }
-  .stat-label { font-size: 0.85rem; opacity: 0.95; }
-
-  /* Empty state */
-  .empty-state {
-    text-align: center;
-    padding: 40px 20px;
-    background: #fff;
-    border-radius: 20px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.06);
-  }
-  .empty-state .emoji { font-size: 3rem; margin-bottom: 12px; }
-  .empty-state .title { font-size: 1.1rem; font-weight: 600; color: #666; margin-bottom: 8px; }
-  .empty-state .desc { font-size: 0.9rem; color: #999; max-width: 500px; margin: 0 auto; line-height: 1.6; }
-
-  /* Summary */
-  .summary-box {
-    background: linear-gradient(120deg, #a1c4fd 0%, #c2e9fb 100%);
-    border-radius: 20px;
-    padding: 30px;
-    margin-top: 40px;
-    color: #1a3c5a;
-  }
-  .summary-box h2 { font-size: 1.3rem; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
-  .summary-item {
-    background: rgba(255,255,255,0.6);
-    backdrop-filter: blur(10px);
-    border-radius: 14px;
-    padding: 14px 18px;
-    margin-bottom: 12px;
-    font-size: 0.95rem;
-    font-weight: 500;
-    border: 1px solid rgba(255,255,255,0.5);
-  }
-
-  /* Footer */
-  .footer {
-    text-align: center;
-    padding: 40px 20px;
-    color: #aaa;
-    font-size: 0.85rem;
-  }
-
-  @media (max-width: 600px) {
-    .cover h1 { font-size: 1.8rem; }
-    .stats-grid { grid-template-columns: repeat(2, 1fr); }
-    .card { padding: 18px; }
-  }
+:root{--bg1:#ffeef8;--bg2:#e0f7fa;--text:#2c2c2c;--card:#ffffff;--accent:#ff6b81;--link:#2b6cb0;--shadow:0 8px 24px rgba(0,0,0,0.08);}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"PingFang SC","Microsoft YaHei",sans-serif;background:linear-gradient(120deg,var(--bg1),var(--bg2));color:var(--text);line-height:1.6;}
+.container{max-width:880px;margin:0 auto;padding:24px;}
+.hero{text-align:center;padding:60px 20px 40px;background:linear-gradient(135deg,#ff9a9e,#fad0c4,#fbc2eb);border-radius:24px;margin-bottom:28px;box-shadow:var(--shadow);color:#fff;}
+.hero h1{margin:0;font-size:2.6rem;text-shadow:0 2px 8px rgba(0,0,0,0.15);}
+.hero .date{margin-top:12px;font-size:1.1rem;opacity:0.95;}
+.overview{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:16px;margin-bottom:32px;}
+.overview-card{border-radius:18px;padding:18px;text-align:center;box-shadow:var(--shadow);transition:transform .2s;}
+.overview-card:hover{transform:translateY(-4px);}
+.ov-emoji{font-size:2rem;}
+.ov-num{font-size:1.8rem;font-weight:800;margin:6px 0;}
+.ov-label{font-size:0.9rem;color:#555;}
+.section-title{font-size:1.4rem;margin:28px 0 14px;padding-left:12px;border-left:5px solid var(--accent);}
+.news-list{display:grid;gap:18px;}
+.news-card{background:var(--card);border-radius:20px;padding:22px;box-shadow:var(--shadow);}
+.news-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:8px;}
+.tag{font-size:0.75rem;padding:4px 10px;border-radius:999px;font-weight:700;}
+.region-domestic{background:#d4edda;color:#155724;}
+.region-global{background:#cce5ff;color:#004085;}
+.news-date{font-size:0.8rem;color:#888;}
+.news-card h3{margin:0 0 10px;font-size:1.15rem;color:#1a202c;}
+.summary{margin:0 0 10px;color:#444;font-size:0.96rem;}
+.insight{margin:0 0 14px;background:#fff7ed;padding:10px 14px;border-radius:12px;font-size:0.92rem;color:#744210;}
+.insight-label{font-weight:700;color:#c05621;}
+.news-footer{display:flex;justify-content:space-between;align-items:center;font-size:0.85rem;color:#666;flex-wrap:wrap;gap:8px;}
+.source-link{color:var(--link);text-decoration:none;font-weight:600;}
+.source-link:hover{text-decoration:underline;}
+.empty-state{text-align:center;padding:36px 20px;background:#fff;border-radius:20px;box-shadow:var(--shadow);}
+.empty-state .emoji{font-size:3rem;margin-bottom:10px;}
+.empty-state h4{margin:0 0 8px;color:#666;}
+.empty-state p{margin:0;color:#999;font-size:0.92rem;}
+.summary-section{background:linear-gradient(135deg,#a18cd1,#fbc2eb);border-radius:20px;padding:24px;color:#fff;margin-top:28px;box-shadow:var(--shadow);}
+.summary-section h2{margin-top:0;}
+.summary-section ul{margin:12px 0 0;padding-left:20px;}
+.summary-section li{margin-bottom:8px;}
+footer{text-align:center;padding:30px 0 50px;color:#888;font-size:0.85rem;}
 </style>
 </head>
 <body>
 <div class="container">
+    <div class="hero">
+        <h1>🌸 AI原生周报</h1>
+        <div class="date">2026.04.11 - 2026.04.17 | 第1期</div>
+        <div style="margin-top:8px;font-size:0.95rem;">全球AI应用 · AI游戏 · 投融资 · 技术突破</div>
+    </div>
 
-  <!-- Cover -->
-  <div class="cover">
-    <h1>🌟 AI原生周报</h1>
-    <div class="subtitle">追踪全球AI应用 · AI游戏 · 技术突破 · 投融资动态</div>
-    <div class="date-badge">📅 2026.04.11 — 04.17</div>
-  </div>
+    <section id="overview">
+        <h2 class="section-title">📊 核心速览</h2>
+        <div class="overview">
+            <div class="overview-card" style="background:linear-gradient(135deg,#ff9a9e,#fff);">
+                <div class="ov-emoji">📰</div><div class="ov-num">15</div><div class="ov-label">本周收录</div>
+            </div>
+            <div class="overview-card" style="background:linear-gradient(135deg,#a18cd1,#fff);">
+                <div class="ov-emoji">🇨🇳</div><div class="ov-num">7</div><div class="ov-label">国内动态</div>
+            </div>
+            <div class="overview-card" style="background:linear-gradient(135deg,#8fd3f4,#fff);">
+                <div class="ov-emoji">🌍</div><div class="ov-num">8</div><div class="ov-label">全球动态</div>
+            </div>
+            <div class="overview-card" style="background:linear-gradient(135deg,#fad0c4,#fff);">
+                <div class="ov-emoji">📅</div><div class="ov-num">7</div><div class="ov-label">覆盖天数</div>
+            </div>
+        </div>
+    </section>
 
-  <!-- Core Stats -->
-  <div class="stats-grid">
-    <div class="stat-card">
-      <div class="stat-number">10</div>
-      <div class="stat-label">条验证新闻</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-number">50%</div>
-      <div class="stat-label">国内信息占比</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-number">6</div>
-      <div class="stat-label">覆盖领域</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-number">99.5%</div>
-      <div class="stat-label">智元机器人产线成功率</div>
-    </div>
-  </div>
+    <section id="技术突破"><h2 class="section-title">🚀 技术突破</h2><div class="news-list"><article class="news-card">
+            <div class="news-header">
+                <span class="tag region-global">全球</span>
+                <span class="news-date">✅ 验证日期：2026-04-14</span>
+            </div>
+            <h3>🚀 Stanford《2026年AI指数报告》：中美AI模型性能差距已基本消失</h3>
+            <p class="summary">Stanford HAI 4月发布的423页报告显示，截至2026年3月美国顶尖模型仅领先中国2.7%，两者差距已经基本消失，全球AI竞争进入'技术平权'阶段。</p>
+            <p class="insight"><span class="insight-label">💡 洞察：</span>性能差距收敛意味着资本与场景落地能力将成为下一阶段决胜手——中国模型的开源+成本优势仍有很大话语权。</p>
+            <div class="news-footer">
+                <span class="source">来源：新浪财经</span>
+                <a class="source-link" href="https://finance.sina.com.cn/tech/roll/2026-04-14/doc-inhunavy1612936.shtml" target="_blank" rel="noopener">阅读原文 ↗</a>
+            </div>
+            </article><article class="news-card">
+            <div class="news-header">
+                <span class="tag region-global">全球</span>
+                <span class="news-date">✅ 验证日期：2026-04-16</span>
+            </div>
+            <h3>🚀 xAI与特斯拉联合发布Grok Computer智能体广测版</h3>
+            <p class="summary">Grok Computer于4月16日开启公测，能够实时操控电脑屏幕、键盘和鼠标，采用'系统2指挥系统1'架构，以Grok模型负责决策规划，特斯拉提供控制算法与硬件经验。</p>
+            <p class="insight"><span class="insight-label">💡 洞察：</span>马斯克正在把AI从'聊天'变成'操作系统'，Grok Computer的上线意味着AI智能体开始进入通用计算机操控的广测阶段。</p>
+            <div class="news-footer">
+                <span class="source">来源：钛媒体</span>
+                <a class="source-link" href="https://www.tmtpost.com/agent/ai-article?id=14649" target="_blank" rel="noopener">阅读原文 ↗</a>
+            </div>
+            </article></div></section>
+<section id="AI原生应用"><h2 class="section-title">📱 AI原生应用</h2><div class="news-list"><article class="news-card">
+            <div class="news-header">
+                <span class="tag region-global">全球</span>
+                <span class="news-date">✅ 验证日期：2026-04-14</span>
+            </div>
+            <h3>📱 OpenAI与诺和诺德达成战略合作，AI赋能药物研发与商业运营</h3>
+            <p class="summary">诺和诺德宣布与OpenAI建立战略合作，将AI工具应用于药物研发、生产制造和商业运营，计划2026年底完成整合，并对全球员工进行AI素养培训。</p>
+            <p class="insight"><span class="insight-label">💡 洞察：</span>制药巨头与最强模型厂的绑定正在加速：AI在生命科学的端到端落地，从'试点'走向'平台化'。</p>
+            <div class="news-footer">
+                <span class="source">来源：新浪财经</span>
+                <a class="source-link" href="https://finance.sina.com.cn/stock/t/2026-04-14/doc-inhunawe4204574.shtml" target="_blank" rel="noopener">阅读原文 ↗</a>
+            </div>
+            </article><article class="news-card">
+            <div class="news-header">
+                <span class="tag region-global">全球</span>
+                <span class="news-date">✅ 验证日期：2026-04-16</span>
+            </div>
+            <h3>📱 Adobe推出Firefly AI Assistant，支持跨应用操作与Claude集成</h3>
+            <p class="summary">Adobe发布代理型AI助手Firefly AI Assistant，能通过自然语言调用Photoshop、Premiere、Illustrator等工具，并与Anthropic Claude深度集成，实现'构思—执行'闭环。</p>
+            <p class="insight"><span class="insight-label">💡 洞察：</span>创意工具的竞争已从'生成素材'升级为'编排多应用工作流'，Adobe试图用AI助手锁定企业级创意平台。</p>
+            <div class="news-footer">
+                <span class="source">来源：新浪财经</span>
+                <a class="source-link" href="https://finance.sina.com.cn/stock/usstock/c/2026-04-16/doc-inhurpqs7505404.shtml?wm=4007" target="_blank" rel="noopener">阅读原文 ↗</a>
+            </div>
+            </article><article class="news-card">
+            <div class="news-header">
+                <span class="tag region-domestic">国内</span>
+                <span class="news-date">✅ 验证日期：2026-04-11</span>
+            </div>
+            <h3>📱 宝通发布2026年AI场景落地整体计划</h3>
+            <p class="summary">宝通科技发布《2026年AI场景落地整体计划》，覆盖前台业务、中台能力与后台职能，规划P0/P1/P2三梯队26个项目，预计2026年底完成P0、P1上线。</p>
+            <p class="insight"><span class="insight-label">💡 洞察：</span>传统企业的AI化转型已从'点状试点'进入'系统性场景落地'，宝通的计划是典型样本。</p>
+            <div class="news-footer">
+                <span class="source">来源：新浪财经</span>
+                <a class="source-link" href="https://finance.sina.com.cn/wm/2026-04-11/doc-inhuakfi4722744.shtml" target="_blank" rel="noopener">阅读原文 ↗</a>
+            </div>
+            </article><article class="news-card">
+            <div class="news-header">
+                <span class="tag region-domestic">国内</span>
+                <span class="news-date">✅ 验证日期：2026-04-14</span>
+            </div>
+            <h3>📱 AI短剧的'虚火'该灭了</h3>
+            <p class="summary">AI短剧从'3000元成本、5亿播放'的神话，到64%作品播放量不足百万、90%中小玩家亏损，表明纯粹依赖模板和流量的投机者正在出局，优质内容回归成为关键。</p>
+            <p class="insight"><span class="insight-label">💡 洞察：</span>AI降低了生产门槛，但拉低了内容稀缺性，最终还是要回到'好故事'的竞争本质。</p>
+            <div class="news-footer">
+                <span class="source">来源：新浪财经/猛犸新闻</span>
+                <a class="source-link" href="https://finance.sina.com.cn/jjxw/2026-04-14/doc-inhumwqh4190466.shtml" target="_blank" rel="noopener">阅读原文 ↗</a>
+            </div>
+            </article><article class="news-card">
+            <div class="news-header">
+                <span class="tag region-domestic">国内</span>
+                <span class="news-date">✅ 验证日期：2026-04-17</span>
+            </div>
+            <h3>📱 InfoComm 2026：AI嵌入视听产品，国产厂商发力商显</h3>
+            <p class="summary">4月15-17日举办的InfoComm China 2026上，思必驰、科大讯飞、TCL、海康威视等展示了搭载AI算法的麦克风、会议一体机、LED屏等产品，会议场景的设备集成逻辑被重写。</p>
+            <p class="insight"><span class="insight-label">💡 洞察：</span>会议室从'多设备集成'过渡到'单一智能终端'，AI正在成为商显产品的标配，但多设备协同仍需时间验证。</p>
+            <div class="news-footer">
+                <span class="source">来源：财联社</span>
+                <a class="source-link" href="https://www.cls.cn/detail/2347817" target="_blank" rel="noopener">阅读原文 ↗</a>
+            </div>
+            </article></div></section>
+<section id="AI原生游戏"><h2 class="section-title">🎮 AI原生游戏</h2><div class="news-list"><article class="news-card">
+            <div class="news-header">
+                <span class="tag region-global">全球</span>
+                <span class="news-date">✅ 验证日期：2026-04-14</span>
+            </div>
+            <h3>🎮 Take-Two裁掉整个AI团队，腾讯、网易、EA反向加码AI</h3>
+            <p class="summary">GTA6母公司Take-Two裁撤整个AI团队，而同期腾讯、网易、EA等厂商持续加大AI投入，游戏行业在'纯手工大作'vs'操作系统级AI'之间分裂明显。</p>
+            <p class="insight"><span class="insight-label">💡 洞察：</span>游戏产业的AI路线之争正在重塑供应链：一方拥抱AI降本增效，另一方则担忧内容质量与玩家反弹。</p>
+            <div class="news-footer">
+                <span class="source">来源：新浪财经</span>
+                <a class="source-link" href="https://finance.sina.com.cn/wm/2026-04-14/doc-inhumfsq4325911.shtml" target="_blank" rel="noopener">阅读原文 ↗</a>
+            </div>
+            </article><article class="news-card">
+            <div class="news-header">
+                <span class="tag region-global">全球</span>
+                <span class="news-date">✅ 验证日期：2026-04-16</span>
+            </div>
+            <h3>🎮 英特尔发布AI高静Plus游戏本，启动AI游戏助手生态开放计划</h3>
+            <p class="summary">英特尔4月15日发布AI高静Plus游戏本标准，噪音低于43分贝，续航达7小时，并发布AI游戏助手套件2.0及生态开放计划，联合上下游加速AI在游戏中的落地。</p>
+            <p class="insight"><span class="insight-label">💡 洞察：</span>PC硬件厂商正试图将AI从'配件'变成'游戏体验核心'，AI高静标准可能成为未来游戏本的重要分水岭。</p>
+            <div class="news-footer">
+                <span class="source">来源：新浪财经/钛媒体</span>
+                <a class="source-link" href="https://finance.sina.com.cn/cj/2026-04-16/doc-inhusenq1690949.shtml?froms=ggmp" target="_blank" rel="noopener">阅读原文 ↗</a>
+            </div>
+            </article><article class="news-card">
+            <div class="news-header">
+                <span class="tag region-domestic">国内</span>
+                <span class="news-date">✅ 验证日期：2026-04-17</span>
+            </div>
+            <h3>🎮 当游戏遇见AI：头部厂商为何选择阿里云</h3>
+            <p class="summary">阿里云连续第5年位居中国游戏云市场第一，国内首款AI原生历史策略游戏《历史模拟器：明思宗》借助百炼+千问实现无限剧情与活的世界，展示AI原生游戏的可能性。</p>
+            <p class="insight"><span class="insight-label">💡 洞察：</span>中国游戏厂商已不满足于'AI辅助'，而是试图用大模型重构游戏世界观与交互规则。</p>
+            <div class="news-footer">
+                <span class="source">来源：新浪财经</span>
+                <a class="source-link" href="https://finance.sina.com.cn/tech/roll/2026-04-17/doc-inhuvkxa0902904.shtml" target="_blank" rel="noopener">阅读原文 ↗</a>
+            </div>
+            </article></div></section>
+<section id="投融资"><h2 class="section-title">💰 投融资</h2><div class="news-list"><article class="news-card">
+            <div class="news-header">
+                <span class="tag region-domestic">国内</span>
+                <span class="news-date">✅ 验证日期：2026-04-12</span>
+            </div>
+            <h3>💰 生数科技B轮融资近20亿元，估值超20亿美元并计划港股IPO</h3>
+            <p class="summary">AI视频生成独角兽生数科技宣布完成近20亿元B轮融资，阿里云领投，本轮估值超20亿美元，或最快于2026年上半年启动港股IPO。</p>
+            <p class="insight"><span class="insight-label">💡 洞察：</span>视频生成模型赛道进入IPO集中期，生数科技的U-ViT+SaaS双轮驱动是其承接二级市场审视的关键故事。</p>
+            <div class="news-footer">
+                <span class="source">来源：财联社</span>
+                <a class="source-link" href="https://m.cls.cn/detail/2341375" target="_blank" rel="noopener">阅读原文 ↗</a>
+            </div>
+            </article><article class="news-card">
+            <div class="news-header">
+                <span class="tag region-domestic">国内</span>
+                <span class="news-date">✅ 验证日期：2026-04-13</span>
+            </div>
+            <h3>💰 中科闻歌港股IPO备案通过，决策智能服务市场份额第一</h3>
+            <p class="summary">中科院自动化研究所孵化的中科闻歌提交港股招股书，计划以特专科技公司身份上市，2025年净收入留存率达139.5%，在企业级大模型决策智能服务市场份额第一。</p>
+            <p class="insight"><span class="insight-label">💡 洞察：</span>B端大模型决策智能服务商开始进入资本化集中阶段，高客户留存率成为最有说服力的财务指标。</p>
+            <div class="news-footer">
+                <span class="source">来源：财联社</span>
+                <a class="source-link" href="https://www.cls.cn/detail/2341705" target="_blank" rel="noopener">阅读原文 ↗</a>
+            </div>
+            </article><article class="news-card">
+            <div class="news-header">
+                <span class="tag region-domestic">国内</span>
+                <span class="news-date">✅ 验证日期：2026-04-13</span>
+            </div>
+            <h3>💰 全球首个预防归因AI医疗平台睿禾健康宣布种子轮融资</h3>
+            <p class="summary">睿禾健康（ReHealth AI）宣布完成400万元种子轮融资，打造全球首个将预防归因结果直接对接支付结算的跨病种AI平台，首次跑通预防医疗商业闭环。</p>
+            <p class="insight"><span class="insight-label">💡 洞察：</span>将预防效果变成可结算的支付依据，突破了预防医疗'投入有效但无法付费'的痛点，具有创新的商业模式。</p>
+            <div class="news-footer">
+                <span class="source">来源：新浪财经</span>
+                <a class="source-link" href="https://finance.sina.com.cn/roll/2026-04-13/doc-inhukefa4737670.shtml" target="_blank" rel="noopener">阅读原文 ↗</a>
+            </div>
+            </article></div></section>
+<section id="社交媒体/大厂动态"><h2 class="section-title">🐦 社交媒体/大厂动态</h2><div class="news-list"><article class="news-card">
+            <div class="news-header">
+                <span class="tag region-global">全球</span>
+                <span class="news-date">✅ 验证日期：2026-04-17</span>
+            </div>
+            <h3>🐦 Jack Dorsey因AI能力跃升宣布Block裁员40%员工</h3>
+            <p class="summary">Twitter联合创始人Jack Dorsey在4月17日详述了Block裁员超过4000人（占40%）的决策过程，称Anthropic Opus 4.6与OpenAI Codex 5.3的突破使得公司可以'以更小的人力基准'重建为智能组织。</p>
+            <p class="insight"><span class="insight-label">💡 洞察：</span>这是科技行业因AI直接导致的最大规模裁员之一，引发对AI时代组织架构的深层讨论。</p>
+            <div class="news-footer">
+                <span class="source">来源：Fortune</span>
+                <a class="source-link" href="https://fortune.com/2026/04/17/twitter-cofounder-block-ceo-jack-dorsey-thought-process-laid-off-40-staff-ai" target="_blank" rel="noopener">阅读原文 ↗</a>
+            </div>
+            </article><article class="news-card">
+            <div class="news-header">
+                <span class="tag region-global">全球</span>
+                <span class="news-date">✅ 验证日期：2026-04-15</span>
+            </div>
+            <h3>🐦 融资3000万美元的AI男友《EVE》上线却翻车</h3>
+            <p class="summary">AI陪伴产品《EVE》4月10日正式上线，累计融资超3000万美元，但开服即遭遇算力崩溃、人设崩塌、视觉表现糟糕等问题，玩家反馈两极分化。</p>
+            <p class="insight"><span class="insight-label">💡 洞察：</span>AI陪伴应用的'资本热'与'体验冷'形成鲜明对比，监管趋严下情感边界与技术稳定性是后续突破口。</p>
+            <div class="news-footer">
+                <span class="source">来源：新浪财经</span>
+                <a class="source-link" href="https://finance.sina.com.cn/tech/roll/2026-04-15/doc-inhurayu3301281.shtml" target="_blank" rel="noopener">阅读原文 ↗</a>
+            </div>
+            </article></div></section>
 
-  <!-- AI Native Apps -->
-  <div class="section-title"><span class="icon">🚀</span> AI原生应用</div>
+    <section id="data">
+        <h2 class="section-title">📈 用户案例 / 数据</h2>
+        <div class="empty-state">
+            <div class="emoji">🔍</div>
+            <h4>本周暂无DAU/收入/留存等用户数据新披露</h4>
+            <p>经对新浪财经、财联社、钛媒体、界面新闻、MarketingProfs、Fortune等来源交叉验证，2026年4月11日至4月17日期间，未见到AI原生应用DAU、收入、留存等核心指标的新发布数据。<br><br>参考：斯坦福《2026年AI指数报告》显示，生成式AI在三年内达到53%人口采用率，美国消费者年获取价值达1720亿美元。</p>
+        </div>
+    </section>
 
-  <div class="card">
-    <div class="card-header">
-      <div class="card-title">Anthropic推出Claude Design，一句话生成设计原型直接挑战Figma</div>
-      <span class="tag tag-app">应用</span>
-      <span class="tag tag-global">全球</span>
-    </div>
-    <div class="meta">
-      <span class="source">来源：VentureBeat</span>
-      <span class="verified-date">✅ 验证日期：2026-04-17</span>
-    </div>
-    <p>Anthropic于4月17日发布Claude Design研究预览版，所有付费Claude订阅用户可立即使用。该产品由同日发布的Claude Opus 4.7驱动，用户通过对话提示即可生成交互式产品原型、幻灯片、营销物料等。亮点在于与Claude Code的无缝 handoff —— 设计完成后可一键交给Claude Code实现为生产代码，形成"创意→原型→代码"的完整闭环。</p>
-    <p>早期用户Brilliant反馈，原先需20+提示才能在竞品中完成的复杂页面，在Claude Design中仅需2条提示。Anthropic首席产品官Mike Krieger已于4月14日从Figma董事会辞职，为竞争产品让路。</p>
-    <div class="insight"><span class="insight-label">💡 洞察：</span> Anthropic正从基础模型提供商向全栈产品公司跃迁。Claude Design的推出意味着AI原生设计工具已具备替代传统设计软件的商业可行性，Figma、Adobe、Canva的护城河正在被侵蚀。</div>
-    <a href="https://venturebeat.com/technology/anthropic-just-launched-claude-design-an-ai-tool-that-turns-prompts-into-prototypes-and-challenges-figma" target="_blank">阅读原文 →</a>
-  </div>
+    <section class="summary-section">
+        <h2>🎯 本周核心洞察</h2>
+        <ul>
+            <li><strong>技术平权加速：</strong>斯坦福报告指出中美顶尖模型性能差距仅2.7%，技术差距收敛将让场景落地与生态能力成为下一阶段核心战场。</li>
+            <li><strong>AI从工具变代理：</strong>Adobe Firefly AI Assistant、Grok Computer、OpenAI企业平台均指向同一方向：AI不再只是生成内容，而是跨应用执行工作流。</li>
+            <li><strong>游戏产业路线分裂：</strong>一边是Take-Two裁撤AI团队坚持手工打磨，一边是腾讯、网易、阿里云、英特尔加码AI原生游戏，行业正面临“效率与体验”的再平衡。</li>
+            <li><strong>中国AI资本化提速：</strong>生数科技、中科闻歌密集推进港股IPO，视频生成与B端决策智能成为资本最关注的两条赛道。</li>
+        </ul>
+    </section>
 
-  <div class="card">
-    <div class="card-header">
-      <div class="card-title">阿里千问上线国内首个全场景"表格Agent"，Excel成为AI新战场</div>
-      <span class="tag tag-app">应用</span>
-      <span class="tag tag-domestic">国内</span>
-    </div>
-    <div class="meta">
-      <span class="source">来源：CSDN脑启社区 / 综合报道</span>
-      <span class="verified-date">✅ 验证日期：2026-04-14（事件）/ 04-17（报道）</span>
-    </div>
-    <p>4月14日，阿里千问上线国内首个全场景"表格Agent"。用户在对话中可直接要求生成、编辑Excel文件，系统通常在1-2分钟内输出带真实公式、条件格式、复杂排版的专业Excel文件，无需二次复制粘贴。技术实现上，千问将表格生成拆解为完整的Agent执行链路，在独立沙箱环境中运行。</p>
-    <div class="insight"><span class="insight-label">💡 洞察：</span> 表格是全球月活超15亿的办公工具，继编程助手之后，Excel正成为AI Agent的下一个爆发点。从"提供答案"到"直接交付可下载成果"，智能体的价值交付形态正在发生质变。</div>
-    <a href="https://nanhubrain.csdn.net/6a0153ff0a2f6a37c5a92403.html" target="_blank">阅读原文 →</a>
-  </div>
-
-  <!-- AI Native Games -->
-  <div class="section-title"><span class="icon">🎮</span> AI原生游戏</div>
-  <div class="empty-state">
-    <div class="emoji">🔍</div>
-    <div class="title">本周该领域暂无重大可验证新闻</div>
-    <div class="desc">
-      经对VentureBeat、GameSpot、SCMP、新浪财经、知乎、Reddit r/gamedev等多来源交叉验证，2026年4月11日至4月17日期间，未检索到AI原生游戏（AI-native games）新产品发布、重大融资或技术突破的可靠报道。<br><br>
-      值得注意的是，GDC 2026趋势报告显示生成式AI在游戏开发中的渗透率持续提升，但具体产品动态多集中于3月底或4月初发布，不在本周时间窗口内。
-    </div>
-  </div>
-
-  <!-- Tech Breakthroughs -->
-  <div class="section-title"><span class="icon">🔬</span> 技术突破</div>
-
-  <div class="card">
-    <div class="card-header">
-      <div class="card-title">中国科技巨头与李飞飞竞逐"世界模型"：阿里发布Happy Oyster，World Labs推Spark 2.0</div>
-      <span class="tag tag-tech">技术</span>
-      <span class="tag tag-domestic">国内</span>
-    </div>
-    <div class="meta">
-      <span class="source">来源：South China Morning Post</span>
-      <span class="verified-date">✅ 验证日期：2026-04-16</span>
-    </div>
-    <p>4月16日，阿里巴巴旗下ATH业务单元发布"Happy Oyster"世界模型，支持实时、开放式的虚拟世界创建与交互。与传统AI视频工具不同，Happy Oyster可生成最长3分钟的视频片段，并在生成过程中持续响应指令（如输入"黑鸦飞过"即可实时添加）。该模型支持"导演模式"（基于文本/图片提示构建世界）和"漫游模式"（探索世界）。</p>
-    <p>几乎同一时间，李飞飞联合创立的World Labs发布开源3D高斯溅射渲染引擎Spark 2.0，旨在让智能手机等性能较弱设备也能查看大规模精细3D图像。</p>
-    <div class="insight"><span class="insight-label">💡 洞察：</span> 世界模型（World Models）正成为中美AI竞赛的新高地。从语言模型到物理世界理解，这一跃迁将直接影响自动驾驶、机器人、游戏和元宇宙的基础设施层。阿里选择闭源产品化，World Labs选择开源生态，两条路线并行推进。</div>
-    <a href="https://www.scmp.com/tech/big-tech/article/3350351/chinese-tech-giants-ai-godmother-li-fei-fei-race-seize-edge-world-models" target="_blank">阅读原文 →</a>
-  </div>
-
-  <div class="card">
-    <div class="card-header">
-      <div class="card-title">MiniMax M2.7正式开源：2290亿参数、自主构建Agent Harness</div>
-      <span class="tag tag-tech">技术</span>
-      <span class="tag tag-domestic">国内</span>
-    </div>
-    <div class="meta">
-      <span class="source">来源：财新网</span>
-      <span class="verified-date">✅ 验证日期：2026-04-13</span>
-    </div>
-    <p>4月12日，国产大模型公司MiniMax正式开源最新一代模型M2.7。该模型拥有2290亿参数量（推理激活约100亿），能够自主构建Agent Harness并通过强化学习驱动自身迭代。在SWE-Pro基准测试中，M2.7得分56.22%，接近国际顶级模型水平。</p>
-    <p>更重要的是，M2.7已在平头哥、华为昇腾、摩尔线程、天数智芯、英伟达等多种AI芯片上实现零代码修改适配，显示出极强的国产算力兼容性。</p>
-    <div class="insight"><span class="insight-label">💡 洞察：</span> MiniMax的开源策略与DeepSeek形成呼应：以开源换生态、以适配换市场。在国产芯片多元格局下，"一次训练、多端部署"的能力将成为大模型公司的核心竞争力。</div>
-    <a href="https://m.caixin.com/m/2026-04-13/102433293.html" target="_blank">阅读原文 →</a>
-  </div>
-
-  <div class="card">
-    <div class="card-header">
-      <div class="card-title">Grok Computer智能体广测版上线：马斯克推出"系统2指挥系统1"架构</div>
-      <span class="tag tag-tech">技术</span>
-      <span class="tag tag-domestic">国内</span>
-    </div>
-    <div class="meta">
-      <span class="source">来源：钛媒体</span>
-      <span class="verified-date">✅ 验证日期：2026-04-13（报道）/ 04-16（产品上线）</span>
-    </div>
-    <p>4月16日，马斯克通过X平台确认的Grok Computer智能体广测版正式上线。该产品由xAI与特斯拉联合开发，内部代号"数字擎天柱"，核心架构为"系统2指挥系统1"：Grok模型承担深度决策与逻辑推理（系统2），特斯拉自动驾驶积累的实时控制算法负责转化为具体电脑操作（系统1）。</p>
-    <p>据估算，联合开发模式使单一团队研发同类产品的边际成本降低约18.5%。产品定位为实时操作电脑屏幕、键盘和鼠标的AI执行系统，重点覆盖跨软件整合数据、自动化重复办公流程等场景。</p>
-    <div class="insight"><span class="insight-label">💡 洞察：</span> "模型+控制"的垂直整合模式正在降低AI执行系统的落地成本。特斯拉的自动驾驶控制经验与xAI大模型的结合，为其他硬件厂商提供了可复制的协同范式。</div>
-    <a href="https://www.tmtpost.com/agent/ai-article/14649" target="_blank">阅读原文 →</a>
-  </div>
-
-  <div class="card">
-    <div class="card-header">
-      <div class="card-title">斯坦福AI指数2026发布：12张图解读全球AI现状</div>
-      <span class="tag tag-tech">技术</span>
-      <span class="tag tag-global">全球</span>
-    </div>
-    <div class="meta">
-      <span class="source">来源：IEEE Spectrum</span>
-      <span class="verified-date">✅ 验证日期：2026-04-13</span>
-    </div>
-    <p>4月13日，IEEE Spectrum发布对斯坦福大学2026年AI指数的深度解读。核心发现包括：美国公司2025年发布了50个"值得关注"的AI模型，中国正在缩小差距；行业发布的模型占比已超过90%， academia和政府机构仅占10%；中国在工业机器人部署上遥遥领先，2024年安装量达29.5万台。</p>
-    <p>同时， resentment toward AI 在美国持续升温，部分地方政府开始限制或禁止新建数据中心。</p>
-    <div class="insight"><span class="insight-label">💡 洞察：</span> AI发展呈现"技术能力向上、公众接受度向下"的剪刀差。当模型能力持续突破时，社会阻力（数据中心禁令、对行业领袖的人身威胁）也在同步升级，这将成为制约AI规模化落地的隐性瓶颈。</div>
-    <a href="https://spectrum.ieee.org/state-of-ai-index-2026" target="_blank">阅读原文 →</a>
-  </div>
-
-  <div class="card">
-    <div class="card-header">
-      <div class="card-title">Microsoft精简Windows 11 Copilot UI，从"无处不在"转向"任务优先"</div>
-      <span class="tag tag-tech">技术</span>
-      <span class="tag tag-global">全球</span>
-    </div>
-    <div class="meta">
-      <span class="source">来源：JMAC Web AI News Digest</span>
-      <span class="verified-date">✅ 验证日期：2026-04-11</span>
-    </div>
-    <p>4月11日，Microsoft开始调整Windows 11中Copilot的UI策略：内联Copilot按钮逐渐退居次要位置，从"每个面板都提示"转向"任务优先、以UI为中心"的工作流。这一变化不仅是设计调整，更是一种治理姿态——重新校准企业应用中"辅助"功能的边界。</p>
-    <p>同日，Gemini升级支持3D模型和实时可操控模拟，用户可直接拖拽变量观察AI推理如何适应变化，标志着AI交互从静态答案向沉浸式实验转变。</p>
-    <div class="insight"><span class="insight-label">💡 洞察：</span> AI UX正在经历一次"减法革命"。在经历了早期的功能堆砌后，巨头们开始意识到：少即是多。让用户在需要时发现AI，比不断打断用户更能建立长期信任。</div>
-    <a href="https://jmacweb.com/ai-news/daily/2026-04-11" target="_blank">阅读原文 →</a>
-  </div>
-
-  <!-- Investment -->
-  <div class="section-title"><span class="icon">💰</span> 投融资动态</div>
-
-  <div class="card">
-    <div class="card-header">
-      <div class="card-title">芝加哥大学联合微软、英伟达推出AI创业加速计划，单企最高35万美元云资源</div>
-      <span class="tag tag-invest">投融资</span>
-      <span class="tag tag-global">全球</span>
-    </div>
-    <div class="meta">
-      <span class="source">来源：University of Chicago Polsky Center</span>
-      <span class="verified-date">✅ 验证日期：2026-04-14</span>
-    </div>
-    <p>4月14日，芝加哥大学Polsky创业中心与数据科学研究所宣布联合AI Research Commons、Microsoft、NVIDIA推出新计划，支持Third Coast Foundry八所中西部研究型大学（包括CMU、西北大学、普渡大学等）的AI初创企业。</p>
-    <p>入选企业可获得：最高35万美元微软云服务额度、NVIDIA Inception计划权益、旧金山Third Coast Foundry联合办公空间、Mayfield顶级AI投资人路演机会等。该计划还特别安排芝加哥大学本科生和MBA学生参与暑期全职实习。</p>
-    <div class="insight"><span class="insight-label">💡 洞察：</span>  Midwest正在复制硅谷的"大学+风投+云厂商"创业孵化三角。当 coastal VCs 开始将目光投向匹兹堡、芝加哥和麦迪逊，美国AI创业的地理分布正在发生结构性变迁。</div>
-    <a href="https://polsky.uchicago.edu/2026/04/14/university-of-chicago-announces-partnership-with-ai-research-commons-microsoft-nvidia-to-accelerate-midwest-ai-startups/" target="_blank">阅读原文 →</a>
-  </div>
-
-  <!-- Social Media / Safety -->
-  <div class="section-title"><span class="icon">📢</span> 社交媒体与安全</div>
-
-  <div class="card">
-    <div class="card-header">
-      <div class="card-title">Sam Altman住所遭燃烧瓶袭击，AI反对声浪从和平抗议走向暴力</div>
-      <span class="tag tag-social">安全</span>
-      <span class="tag tag-global">全球</span>
-    </div>
-    <div class="meta">
-      <span class="source">来源：The Verge</span>
-      <span class="verified-date">✅ 验证日期：2026-04-15</span>
-    </div>
-    <p>4月15日，The Verge报道OpenAI CEO Sam Altman的住所遭到燃烧瓶袭击，20岁嫌犯在作案前曾写下对AI导致人类灭绝的恐惧。两天内Altman住所被第二次针对。仅一周前，印第安纳波利斯一名市议员家中遭13发子弹射击，门口留有"不要数据中心"的纸条。</p>
-    <p>虽然绝大多数AI反对活动仍保持非暴力（如伦敦大规模反AI抗议、针对数据中心的本地抵制），但近期事件标志着阻力正在升级。Altman部分指责批评性媒体报道煽动了暴力。</p>
-    <div class="insight"><span class="insight-label">💡 洞察：</span> AI发展的社会成本正在从抽象争论具象化为物理安全威胁。当"反AI"情绪与地缘政治、地方 NIMBYism（邻避效应）交织，科技领袖的人身安全和数据中心的社区接纳度将成为新的运营风险变量。</div>
-    <a href="https://www.theverge.com/ai-artificial-intelligence/911778/ai-violence-sam-altman-home" target="_blank">阅读原文 →</a>
-  </div>
-
-  <!-- Domestic Policy & Industry -->
-  <div class="section-title"><span class="icon">🇨🇳</span> 国内政策与产业</div>
-
-  <div class="card">
-    <div class="card-header">
-      <div class="card-title">工信部等十部门发布AI科技伦理审查办法，7月15日起施行</div>
-      <span class="tag tag-domestic">国内</span>
-      <span class="tag tag-tech">政策</span>
-    </div>
-    <div class="meta">
-      <span class="source">来源：CSDN脑启社区 / 综合报道</span>
-      <span class="verified-date">✅ 验证日期：2026-04-17（报道）</span>
-    </div>
-    <p>4月16日（报道时间），工信部等十部门联合印发《人工智能科技伦理审查与服务办法（试行）》，共六章三十七条。办法明确AI科技伦理审查应重点关注人类福祉、公平公正、可控可信等方面，包括训练数据选择标准、算法模型设计合理性、偏见歧视防范措施、算法用途及潜在风险信息披露等。</p>
-    <p>地方层面，山东印发《关于支持场景培育开放应用推动新质生产力突破发展的行动方案》，深入实施"人工智能+"行动；湖北将于4月17日在武汉举行2026湖北人工智能产业发展生态大会。</p>
-    <div class="insight"><span class="insight-label">💡 洞察：</span> 中国AI治理正从"原则倡导"进入"制度化、可操作化"阶段。伦理审查办法的出台意味着合规能力将成为AI企业的核心竞争力之一，头部厂商的合规优势将进一步挤压中小企业的生存空间。</div>
-    <a href="https://nanhubrain.csdn.net/6a0153ff0a2f6a37c5a92403.html" target="_blank">阅读原文 →</a>
-  </div>
-
-  <div class="card">
-    <div class="card-header">
-      <div class="card-title">智元机器人8小时工业直播收官：具身智能从"炫技"迈向"炼金"</div>
-      <span class="tag tag-domestic">国内</span>
-      <span class="tag tag-tech">产业</span>
-    </div>
-    <div class="meta">
-      <span class="source">来源：界面新闻</span>
-      <span class="verified-date">✅ 验证日期：2026-04-14</span>
-    </div>
-    <p>4月14日，智元机器人在龙旗科技南昌平板制造工厂完成8小时产线作业直播。精灵G2在20秒节拍的3C产线上连续运行8小时，零重大异常，作业成功率达99.5%以上，每小时完成310件产品。目前多台G2已在产线稳定运行，预计2026年Q3部署规模将扩大至100台。</p>
-    <p>这是智元为期六天的"AI发布周"收官之作。期间还开源了全球首个覆盖具身智能全域研究的真实场景数据集AGIBOT WORLD 2026，以及一站式仿真开发平台Genie Sim 3.0和新一代具身基座大模型Genie Operator-2。</p>
-    <div class="insight"><span class="insight-label">💡 洞察：</span> 当客户"已经付费"而非"免费试用"，具身智能才真正跨越了商业化鸿沟。智元的8小时直播不是Demo，而是一张工业级交付的验收单。2026年将成为具身智能从"实验室炫技"到"工厂炼金"的关键转折年。</div>
-    <a href="https://m.jiemian.com/article/14248673.html" target="_blank">阅读原文 →</a>
-  </div>
-
-  <!-- Summary -->
-  <div class="summary-box">
-    <h2>🧠 本周核心洞察</h2>
-    <div class="summary-item">1. <strong>Agent交付形态质变：</strong> 从阿里"表格Agent"直接生成Excel，到Claude Design输出可交互原型，AI Agent正在从"回答问题"进化为"交付成果"，这一跃迁将重新定义生产力软件的竞争格局。</div>
-    <div class="summary-item">2. <strong>国产算力进入"好用"阶段：</strong> DeepSeek V4全面适配华为昇腾、MiniMax M2.7零代码修改适配多芯、智元机器人工业级交付——中国AI产业"去CUDA化"从口号走向产品。</div>
-    <div class="summary-item">3. <strong>世界模型成为新战场：</strong> 阿里Happy Oyster与李飞飞Spark 2.0的同周发布，标志着中美竞争已从语言模型延伸至物理世界理解，自动驾驶、机器人和元宇宙的基础设施层将被重写。</div>
-    <div class="summary-item">4. <strong>社会阻力与技术创新同步升级：</strong> Sam Altman住所遇袭、数据中心遭抵制、IEEE指数显示公众接受度下滑——AI的"社会许可"（Social License）正成为与技术能力同等重要的制约因素。</div>
-  </div>
-
-  <!-- Footer -->
-  <div class="footer">
-    <p>🌸 AI原生周报 | 每周精选全球最有趣的AI应用与AI游戏情报</p>
-    <p>所有信息均经来源链接与发布日期验证 · 报告周期：2026.04.11 — 04.17</p>
-    <p style="margin-top:8px;">Generated by Hermes Agent ·  deployed on GitHub Pages</p>
-  </div>
-
+    <footer>
+        <p>AI原生周报 · 每周自动生成 · 来源可验证 · <a href="https://arkcui.github.io/ai-native-weekly/">arkcui.github.io/ai-native-weekly</a></p>
+        <p>生成时间：2026-04-17</p>
+    </footer>
 </div>
 </body>
 </html>
